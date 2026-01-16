@@ -74,9 +74,8 @@
 
         <nav class="w-full px-6 py-4 lg:px-12 flex justify-between items-center z-50">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('img/logo-simpro.jpeg') }}" alt="Logo Projek" class="h-12 w-auto object-contain rounded-md">
-                
-                <span class="font-bold text-xl tracking-tight">SKPL<span class="text-blue-600 dark:text-blue-400">Project</span></span>
+                <img src="{{ asset('img/logo simpro.jpeg') }}" alt="Logo" class="h-12 w-auto object-contain rounded-md shadow-sm">
+                <span class="font-bold text-2xl tracking-tighter">SIM<span class="text-blue-600 dark:text-blue-400">PRO</span></span>
             </div>
             
             <div class="flex items-center gap-4">

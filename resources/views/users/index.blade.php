@@ -57,10 +57,21 @@
             <td class="p-4 text-right">
               <div class="flex items-center justify-end space-x-2">
                 @if($user->id !== auth()->id())
+                  <!-- Reset Password Button -->
+                  <form method="POST" action="{{ route('users.reset-password', $user) }}" class="inline" onsubmit="return confirm('Yakin ingin reset password user ini?')">
+                    @csrf
+                    <button type="submit" class="p-2 text-yellow-600 hover:text-yellow-800 hover:bg-yellow-50 rounded transition" title="Reset Password User">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v-2L2.257 8.257a2 2 0 010-2.828L7.172 0.515a2 2 0 012.828 0L17.743 8.257A6 6 0 0121 9z"/>
+                      </svg>
+                    </button>
+                  </form>
+                  
+                  <!-- Delete Button -->
                   <form method="POST" action="{{ route('users.destroy', $user) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition">
+                    <button type="submit" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition" title="Hapus User">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                       </svg>

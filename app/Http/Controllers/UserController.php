@@ -109,4 +109,21 @@ class UserController extends Controller
 
         return redirect()->route('profile.edit')->with('status', 'Profil berhasil diperbarui!');
     }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        // Admin dapat reset password user
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk reset password.');
+        }
+
+        $newPassword = \Str::random(8);
+        $user->update([
+            'password' => Hash::make($newPassword)
+        ]);
+
+        // Di implementasi nyata, password baru dikirim via email
+        // Untuk demo, tampilkan di session
+        return redirect()->back()->with('status', "Password user {$user->name} berhasil direset. Password baru: {$newPassword}");
+    }
 }

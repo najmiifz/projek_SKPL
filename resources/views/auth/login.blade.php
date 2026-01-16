@@ -12,11 +12,11 @@
         
         <div class="px-8 pt-8 pb-6 text-center">
             <div class="flex justify-center mb-4">
-                <img src="{{ asset('img/logo-simpro.jpeg') }}" alt="Logo" class="h-12 w-auto object-contain rounded-md shadow-sm">
+                <img src="{{ asset('img/logo simpro.jpeg') }}" alt="Logo" class="h-14 w-auto object-contain rounded-lg shadow-md border border-gray-100 dark:border-gray-800">
             </div>
             
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Selamat Datang</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Masuk untuk mengelola proyek Anda</p>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">SIMPRO</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Sistem Manajemen Proyek Terintegrasi</p>
         </div>
 
         <div class="px-8 pb-8">
