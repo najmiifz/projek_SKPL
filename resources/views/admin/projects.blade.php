@@ -17,34 +17,34 @@
             <ul class="divide-y divide-gray-200">
                 @foreach($projects as $project)
                 <li class="hover:bg-gray-50 transition-colors">
-                    <a href="{{ route('projects.show', $project) }}" class="block px-4 py-4 sm:px-6">
+                    <a href="{{ route('admin.projects.show', $project) }}" class="block px-4 py-4 sm:px-6">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center flex-1">
                                 <div>
                                     <p class="text-lg font-medium text-indigo-600 hover:text-indigo-800">
                                         {{ $project->name }}
                                     </p>
-                                    <p class="text-sm text-gray-500 mt-1">
-                                        <span class="font-semibold">PM:</span> {{ $project->pmUser->name ?? 'Unassigned' }}
+                                    <p class="text-sm text-slate-800 mt-1 font-bold">
+                                        <span class="font-black text-slate-900">PM:</span> {{ $project->pmUser->name ?? 'Unassigned' }}
                                     </p>
-                                    <p class="text-sm text-gray-600 mt-1">
+                                    <p class="text-sm text-slate-700 mt-1 leading-relaxed">
                                         {{ $project->description }}
                                     </p>
                                 </div>
                             </div>
                             <div class="ml-2 flex-shrink-0 flex items-center space-x-4">
-                                <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    @if($project->status == 'Done') bg-green-100 text-green-800
-                                    @elseif($project->status == 'In Progress') bg-yellow-100 text-yellow-800
-                                    @else bg-gray-100 text-gray-800 @endif">
+                                <p class="px-3 py-1 inline-flex text-xs leading-5 font-black rounded-full uppercase tracking-wider
+                                    @if($project->status == 'Done') bg-green-200 text-green-900 border border-green-300
+                                    @elseif($project->status == 'In Progress') bg-yellow-200 text-yellow-900 border border-yellow-300
+                                    @else bg-slate-200 text-slate-900 border border-slate-300 @endif">
                                     {{ $project->status }}
                                 </p>
                             </div>
                         </div>
-                        <div class="mt-2 flex items-center text-sm text-gray-500 space-x-4">
-                            <span>📋 Tasks: {{ $project->tasks->count() }}</span>
-                            <span>✓ Selesai: {{ $project->tasks->where('status', 'Done')->count() }}</span>
-                            <span>📅 Created: {{ $project->created_at->format('d/m/Y') }}</span>
+                        <div class="mt-2 flex items-center text-sm text-slate-700 space-x-4 font-bold">
+                            <span class="flex items-center gap-1"><span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">📋 Tasks: {{ $project->tasks->count() }}</span></span>
+                            <span class="flex items-center gap-1"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">✓ Selesai: {{ $project->tasks->where('status', 'Done')->count() }}</span></span>
+                            <span class="text-slate-500 font-medium">📅 Created: {{ $project->created_at->format('d/m/Y') }}</span>
                         </div>
                     </a>
                 </li>
@@ -52,11 +52,12 @@
             </ul>
         </div>
     @else
-        <div class="bg-white rounded-lg shadow p-8 text-center">
-            <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+        <div class="bg-white rounded-lg shadow-xl border-2 border-dashed border-slate-300 p-12 text-center mt-10">
+            <svg class="w-20 h-20 mx-auto text-slate-400 mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
             </svg>
-            <p class="text-gray-500 text-lg">Belum ada proyek yang dibuat.</p>
+            <p class="text-slate-900 text-2xl font-black mb-2">Belum ada proyek yang dibuat</p>
+            <p class="text-slate-600 font-bold">Pastikan Anda telah menambahkan proyek melalui Dashboard atau seeder.</p>
         </div>
     @endif
 </div>

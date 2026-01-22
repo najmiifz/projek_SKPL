@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
         Route::get('admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::get('admin/projects', [ProjectController::class, 'adminIndex'])->name('admin.projects');
+        Route::get('admin/projects/{project}', [ProjectController::class, 'adminShow'])->name('admin.projects.show');
         Route::get('admin/logs', [DashboardController::class, 'logActivities'])->name('admin.logs');
     });
 

@@ -64,197 +64,186 @@
             }
         </style>
     </head>
-    <body class="antialiased bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 min-h-screen flex flex-col relative overflow-x-hidden font-sans">
+    <body class="antialiased bg-white text-slate-900 min-h-screen flex flex-col relative overflow-x-hidden font-sans selection:bg-blue-600 selection:text-white">
         
         <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-            <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-[120px]"></div>
-            <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-400/20 rounded-full blur-[120px]"></div>
-            <div class="absolute inset-0 bg-grid-pattern [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-50 rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-50 rounded-full blur-[120px]"></div>
+            <div class="absolute inset-0 bg-grid-pattern opacity-[0.4] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
         </div>
 
-        <nav class="w-full px-6 py-4 lg:px-12 flex justify-between items-center z-50">
-            <div class="flex items-center gap-3">
-                <img src="{{ asset('img/logo simpro.jpeg') }}" alt="Logo" class="h-12 w-auto object-contain rounded-md shadow-sm">
-                <span class="font-bold text-2xl tracking-tighter">SIM<span class="text-blue-600 dark:text-blue-400">PRO</span></span>
+        <nav class="w-full px-6 py-6 lg:px-12 flex justify-between items-center z-50 border-b-2 border-slate-100 bg-white/80 backdrop-blur-xl sticky top-0">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-xl group cursor-pointer hover:rotate-12 transition-all">
+                    <img src="{{ asset('img/logo simpro.jpeg') }}" alt="Logo" class="h-8 w-auto object-contain rounded-lg">
+                </div>
+                <span class="font-black text-3xl tracking-tighter uppercase italic">SIM<span class="text-blue-600">PRO</span></span>
             </div>
             
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-6">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 rounded-full bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium text-sm shadow-sm backdrop-blur-md">
+                        <a href="{{ url('/dashboard') }}" class="px-8 py-3 rounded-2xl bg-slate-900 text-white font-black text-sm shadow-xl hover:-translate-y-1 transition-all uppercase tracking-widest">
                             Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="group relative px-6 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
-                            <span class="relative z-10">Masuk / Login</span>
-                            <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 dark:hidden"></div>
+                        <a href="{{ route('login') }}" class="group relative px-10 py-4 rounded-2xl bg-slate-900 text-white font-black text-sm shadow-2xl hover:shadow-blue-200 hover:-translate-y-1 transition-all duration-300 overflow-hidden uppercase tracking-[0.2em]">
+                            <span class="relative z-10">Mulai Masuk</span>
+                            <div class="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </a>
                     @endauth
                 @endif
             </div>
         </nav>
 
-        <main class="flex-grow flex flex-col lg:flex-row items-center justify-center px-6 lg:px-12 py-12 lg:py-20 gap-12 lg:gap-20 max-w-7xl mx-auto z-10">
+        <main class="flex-grow flex flex-col lg:flex-row items-center justify-center px-6 lg:px-12 py-16 lg:py-24 gap-16 lg:gap-24 max-w-7xl mx-auto z-10">
             
-            <div class="flex-1 text-center lg:text-left space-y-8 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-xs font-semibold tracking-wide uppercase mb-2">
-                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    Sistem Manajemen Proyek
+            <div class="flex-1 text-center lg:text-left space-y-10 max-w-2xl">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-slate-900 text-white text-[10px] font-black tracking-[0.3em] uppercase mb-4 shadow-xl">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                    Enterprise Solutions v2.0
                 </div>
                 
-                <h1 class="text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-                    Kelola Proyek & Tim <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Lebih Efisien.</span>
+                <h1 class="text-6xl lg:text-8xl font-black leading-[0.9] tracking-tighter uppercase italic text-slate-900">
+                    DOMINASI <br>
+                    <span class="text-blue-600 underline decoration-indigo-600 decoration-8 underline-offset-8">PROYEK</span> <br>
+                    ANDA.
                 </h1>
                 
-                <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Platform terpusat untuk merencanakan tugas, memantau progres, dan berkolaborasi dengan tim pengembang secara <i>real-time</i>.
+                <p class="text-xl text-slate-700 font-bold leading-relaxed max-w-xl">
+                    Platform manajemen terpusat dengan performa tinggi. Rencanakan tugas, pantau efisiensi, dan <span class="text-slate-900 font-black italic">akselerasi output tim</span> secara real-time.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                <div class="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start pt-6">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all transform hover:-translate-y-1">
+                        <a href="{{ route('dashboard') }}" class="px-12 py-5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-lg shadow-2xl shadow-blue-200 hover:-translate-y-1.5 transition-all uppercase tracking-widest">
                             Buka Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all transform hover:-translate-y-1">
+                        <a href="{{ route('login') }}" class="px-12 py-5 rounded-2xl bg-slate-900 hover:bg-black text-white font-black text-lg shadow-2xl shadow-slate-300 hover:-translate-y-1.5 transition-all uppercase tracking-widest">
                             Mulai Sekarang
                         </a>
                     @endauth
                     
-                    <a href="#features" class="px-8 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-700 dark:text-gray-200 font-semibold text-lg transition-all">
-                        Pelajari Fitur
+                    <a href="#features" class="px-12 py-5 rounded-2xl bg-white border-4 border-slate-900 text-slate-900 font-black text-lg hover:bg-slate-50 transition-all uppercase tracking-widest">
+                        Fitur Utama
                     </a>
-                </div>
-
-                <div class="pt-8 flex items-center justify-center lg:justify-start gap-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-                     <div class="text-xs font-semibold text-gray-400 uppercase tracking-widest"></div>
-                     <div class="flex gap-4 text-gray-500 dark:text-gray-400 font-bold">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                     </div>
                 </div>
             </div>
 
-            <div class="flex-1 w-full max-w-lg relative lg:h-[500px] flex items-center justify-center perspective-1000">
-                <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+            <div class="flex-1 w-full max-w-xl relative flex items-center justify-center">
+                <div class="absolute inset-0 bg-blue-600/5 rounded-full blur-[100px]"></div>
                 
-                <div class="relative w-full bg-white dark:bg-[#161618] rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl p-6 animate-float z-20">
-                    <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">
-                        <div class="flex flex-col">
-                            <div class="h-2 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                            <div class="h-4 w-40 bg-gray-800 dark:bg-gray-600 rounded"></div>
+                <!-- Mockup UI -->
+                <div class="relative w-full bg-white rounded-[40px] border-[10px] border-slate-900 shadow-[20px_20px_0px_0px_rgba(15,23,42,0.1)] p-8 z-20">
+                    <div class="flex justify-between items-center mb-8 border-b-4 border-slate-50 pb-6">
+                        <div class="flex flex-col gap-2">
+                            <div class="h-3 w-32 bg-slate-100 rounded-full"></div>
+                            <div class="h-8 w-48 bg-slate-900 rounded-xl"></div>
                         </div>
-                        <div class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900"></div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
-                            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">12</div>
-                            <div class="text-xs text-blue-400 dark:text-blue-300 mt-1">Active Projects</div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800/50">
-                            <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">85%</div>
-                            <div class="text-xs text-purple-400 dark:text-purple-300 mt-1">Task Completed</div>
+                        <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black shadow-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 border border-transparent hover:border-gray-100 transition-colors cursor-default">
-                            <div class="w-5 h-5 rounded-md border-2 border-green-500 flex items-center justify-center">
-                                <div class="w-2.5 h-2.5 rounded-sm bg-green-500"></div>
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="p-6 rounded-3xl bg-slate-50 border-2 border-slate-100">
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">PROYEK AKTIF</div>
+                            <div class="text-4xl font-black text-slate-900 tracking-tighter italic lowercase">12<span class="text-blue-600">.pts</span></div>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-emerald-50 border-2 border-emerald-100">
+                            <div class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">EFISIENSI</div>
+                            <div class="text-4xl font-black text-emerald-900 tracking-tighter italic lowercase">85<span class="text-emerald-500">%</span></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-slate-100 shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                             </div>
                             <div class="flex-1">
-                                <div class="h-3 w-3/4 bg-gray-800 dark:bg-gray-300 rounded mb-1.5"></div>
-                                <div class="h-2 w-1/2 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                                <div class="h-4 w-3/4 bg-slate-900 rounded-full mb-2"></div>
+                                <div class="h-2 w-1/2 bg-slate-200 rounded-full"></div>
                             </div>
-                            <div class="h-6 w-16 bg-green-100 dark:bg-green-900/30 rounded text-[10px] text-green-700 dark:text-green-400 flex items-center justify-center font-medium">Selesai</div>
+                            <div class="text-[10px] font-black bg-blue-100 text-blue-700 px-3 py-1 rounded-full uppercase">FINAL</div>
                         </div>
 
-                        <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 border border-transparent hover:border-gray-100 transition-colors cursor-default">
-                            <div class="w-5 h-5 rounded-md border-2 border-yellow-500"></div>
+                        <div class="flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-slate-100 shadow-sm opacity-50 translate-x-4">
+                            <div class="w-8 h-8 rounded-lg bg-slate-200"></div>
                             <div class="flex-1">
-                                <div class="h-3 w-2/3 bg-gray-800 dark:bg-gray-300 rounded mb-1.5"></div>
-                                <div class="h-2 w-1/3 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                                <div class="h-4 w-2/3 bg-slate-900 rounded-full mb-2"></div>
+                                <div class="h-2 w-1/3 bg-slate-200 rounded-full"></div>
                             </div>
-                             <div class="h-6 w-16 bg-yellow-100 dark:bg-yellow-900/30 rounded text-[10px] text-yellow-700 dark:text-yellow-400 flex items-center justify-center font-medium">Proses</div>
-                        </div>
-
-                        <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 border border-transparent hover:border-gray-100 transition-colors cursor-default">
-                            <div class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-gray-600"></div>
-                            <div class="flex-1">
-                                <div class="h-3 w-4/5 bg-gray-800 dark:bg-gray-300 rounded mb-1.5"></div>
-                                <div class="h-2 w-1/4 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                            </div>
-                             <div class="h-6 w-16 bg-gray-100 dark:bg-gray-800 rounded text-[10px] text-gray-500 dark:text-gray-400 flex items-center justify-center font-medium">Baru</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="absolute -right-4 -bottom-4 lg:bottom-10 lg:-right-10 w-48 bg-white dark:bg-[#1e1e20] p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-xl animate-float-delayed z-30 hidden sm:block">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-rose-500"></div>
+                <!-- Floating Badge -->
+                <div class="absolute -right-8 bottom-20 w-56 bg-white p-6 rounded-[30px] border-4 border-slate-900 shadow-2xl z-30 animate-float">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 shadow-lg"></div>
                         <div>
-                            <div class="h-2 w-20 bg-gray-200 dark:bg-gray-600 rounded mb-1"></div>
-                            <div class="h-1.5 w-12 bg-gray-100 dark:bg-gray-700 rounded"></div>
+                            <div class="h-2.5 w-24 bg-slate-800 rounded-full mb-1"></div>
+                            <div class="h-2 w-12 bg-slate-200 rounded-full"></div>
                         </div>
                     </div>
-                    <div class="h-1.5 w-full bg-gray-100 dark:bg-gray-700 rounded mb-2 overflow-hidden">
-                        <div class="h-full w-[70%] bg-green-500 rounded"></div>
+                    <div class="h-3 w-full bg-slate-100 rounded-full mb-3 overflow-hidden border border-slate-200 p-0.5">
+                        <div class="h-full w-[70%] bg-blue-600 rounded-full"></div>
                     </div>
-                    <div class="text-[10px] text-gray-400 text-right">70% Tasks Done</div>
+                    <div class="text-[11px] font-black text-slate-900 text-right uppercase tracking-[0.2em]">70% DONE</div>
                 </div>
             </div>
         </main>
 
-        <section id="features" class="py-20 bg-white dark:bg-[#0f0f0f] border-t border-gray-200 dark:border-gray-800">
+        <section id="features" class="py-32 bg-slate-50 border-y-4 border-slate-900">
             <div class="max-w-7xl mx-auto px-6 lg:px-12">
-                <div class="text-center mb-16 max-w-2xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-4">Fitur Unggulan</h2>
-                    <p class="text-gray-500 dark:text-gray-400">Didesain khusus untuk memenuhi kebutuhan manajemen proyek perangkat lunak, dari perencanaan hingga penyelesaian.</p>
+                <div class="text-center mb-24 space-y-4">
+                    <h2 class="text-[11px] font-black text-blue-600 uppercase tracking-[0.5em] mb-4 italic">CORE CAPABILITIES</h2>
+                    <h3 class="text-5xl lg:text-7xl font-black text-slate-900 uppercase tracking-tighter italic">ENGINEERED FOR <br><span class="text-slate-400">PERFECTION.</span></h3>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="group p-8 rounded-2xl bg-gray-50 dark:bg-[#161618] border border-gray-100 dark:border-gray-800 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300">
-                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors">Manajemen Proyek</h3>
-                        <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-                            Buat proyek baru, tetapkan deskripsi, dan atur tenggat waktu. Dashboard khusus untuk Project Manager dan Admin.
+                <div class="grid md:grid-cols-3 gap-12 text-black">
+                    <div class="group p-10 rounded-[40px] bg-white border-4 border-slate-900 hover:shadow-[15px_15px_0px_0px_rgba(15,23,42,1)] transition-all duration-500 hover:-translate-y-4">
+                        <div class="w-16 h-16 rounded-3xl bg-blue-100 flex items-center justify-center text-blue-600 mb-8 font-black text-2xl group-hover:rotate-12 transition-all">01</div>
+                        <h4 class="text-2xl font-black mb-4 uppercase tracking-tight italic">Manajemen Proyek</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed">
+                            Arsitektur data yang kuat untuk mengelola workspace proyek dengan kontrol penuh pada timeline dan resources.
                         </p>
                     </div>
 
-                    <div class="group p-8 rounded-2xl bg-gray-50 dark:bg-[#161618] border border-gray-100 dark:border-gray-800 hover:border-purple-500/30 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300">
-                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-purple-600 transition-colors">Pelacakan Tugas</h3>
-                        <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-                            Pantau status tugas (To Do, In Progress, Done). Anggota tim dapat melihat tugas yang diberikan kepada mereka secara spesifik.
+                    <div class="group p-10 rounded-[40px] bg-white border-4 border-slate-900 hover:shadow-[15px_15px_0px_0px_rgba(37,99,235,1)] transition-all duration-500 hover:-translate-y-4 border-blue-600">
+                        <div class="w-16 h-16 rounded-3xl bg-slate-900 flex items-center justify-center text-white mb-8 font-black text-2xl group-hover:rotate-12 transition-all">02</div>
+                        <h4 class="text-2xl font-black mb-4 uppercase tracking-tight italic">Status Real-Time</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed">
+                            Visualisasi progress dengan akurasi tinggi. Lacak setiap tugas dari inisiasi hingga tahap penyelesaian akhir.
                         </p>
                     </div>
 
-                    <div class="group p-8 rounded-2xl bg-gray-50 dark:bg-[#161618] border border-gray-100 dark:border-gray-800 hover:border-green-500/30 hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300">
-                        <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-green-600 transition-colors">Kolaborasi Tim</h3>
-                        <p class="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-                            Diskusikan detail tugas melalui fitur komentar, unggah lampiran file, dan jaga komunikasi tim tetap pada jalurnya.
+                    <div class="group p-10 rounded-[40px] bg-white border-4 border-slate-900 hover:shadow-[15px_15px_0px_0px_rgba(15,23,42,1)] transition-all duration-500 hover:-translate-y-4 text-black">
+                        <div class="w-16 h-16 rounded-3xl bg-indigo-100 flex items-center justify-center text-indigo-600 mb-8 font-black text-2xl group-hover:rotate-12 transition-all">03</div>
+                        <h4 class="text-2xl font-black mb-4 uppercase tracking-tight italic">Kolaborasi Ekstrim</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed">
+                            Fitur komunikasi terintegrasi yang memungkinkan tim berinteraksi lebih cepat dan meminimalisir miskomunikasi.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <footer class="py-8 border-t border-gray-200 dark:border-gray-800 text-center relative z-10 bg-white dark:bg-[#0a0a0a]">
-            <p class="text-sm text-gray-500 dark:text-gray-500">
-                &copy; {{ date('Y') }} Projek SKPL. Dibuat dengan <span class="text-red-500">❤</span> menggunakan Laravel.
-            </p>
+        <footer class="py-12 bg-white text-center border-t-2 border-slate-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4">
+                    <span class="font-black text-2xl tracking-tighter uppercase italic">SIMPRO<span class="text-blue-600">.SYSTEM</span></span>
+                </div>
+                <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">
+                    &copy; {{ date('Y') }} Enterprise Grade Project Management. Built with Laravel.
+                </p>
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 bg-slate-50 rounded-xl border-2 border-slate-100 flex items-center justify-center text-slate-400 font-black">TW</div>
+                    <div class="w-10 h-10 bg-slate-50 rounded-xl border-2 border-slate-100 flex items-center justify-center text-slate-400 font-black">FB</div>
+                </div>
+            </div>
         </footer>
     </body>
 </html>

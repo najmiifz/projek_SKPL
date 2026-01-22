@@ -76,11 +76,11 @@
                   </span>
                   @if($task->progress)
                   <div class="mt-4">
-                    <p class="text-xs text-slate-500 font-bold mb-2 uppercase">Progress</p>
-                    <div class="w-28 h-3 bg-slate-300 rounded-full overflow-hidden shadow-inner">
-                      <div class="h-full bg-gradient-to-r from-slate-500 to-slate-500 transition-all duration-500 rounded-full" style="width: {{ $task->progress }}%"></div>
+                    <p class="text-xs text-slate-700 font-bold mb-2 uppercase tracking-wider">Progress</p>
+                    <div class="w-28 h-3 bg-slate-200 rounded-full overflow-hidden border border-slate-300 shadow-inner">
+                      <div class="h-full bg-slate-600 transition-all duration-500 rounded-full" style="width: {{ $task->progress }}%"></div>
                     </div>
-                    <p class="text-sm text-slate-700 mt-2 font-bold">{{ $task->progress }}%</p>
+                    <p class="text-sm text-slate-900 mt-2 font-black">{{ $task->progress }}%</p>
                   </div>
                   @endif
                 </div>
@@ -127,8 +127,8 @@
                 </div>
               </form>
               @else
-              <div class="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
-                <p class="text-sm text-slate-700 font-semibold">
+              <div class="p-4 bg-white border-2 border-slate-300 rounded-lg shadow-sm">
+                <p class="text-sm text-slate-800 font-bold">
                   @if(auth()->user()->role === 'admin')
                     👤 <strong>Admin View:</strong> Fitur upload hanya untuk anggota tim yang ditugaskan.
                   @elseif(auth()->user()->role === 'pm')
@@ -176,9 +176,10 @@
                   </ul>
                 </div>
               @else
-                <div class="text-center py-8 text-slate-400">
-                  <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" clip-rule="evenodd"/></svg>
-                  <p class="font-medium">Belum ada file yang diupload</p>
+                <div class="text-center py-10 text-slate-600 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
+                  <svg class="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" clip-rule="evenodd"/></svg>
+                  <p class="font-bold text-lg">Belum ada file yang diupload</p>
+                  <p class="text-sm mt-1">Gunakan form di atas untuk mengunggah bukti pekerjaan.</p>
                 </div>
               @endif
             </div>
@@ -194,22 +195,25 @@
             </div>
 
             <div class="p-6">
-              <div class="space-y-4 max-h-96 overflow-y-auto mb-6 bg-gradient-to-b from-slate-50 to-white p-4 rounded-lg border border-slate-200">
+              <div class="space-y-4 max-h-96 overflow-y-auto mb-6 bg-slate-50 p-4 rounded-lg border-2 border-slate-200">
                 @if($task->comments->isEmpty())
-                  <p class="text-center text-slate-400 py-8">
-                    <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Belum ada komentar
-                  </p>
+                  <div class="text-center text-slate-600 py-10">
+                    <svg class="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <p class="font-bold text-lg">Belum ada komentar</p>
+                    <p class="text-sm mt-1">Jadilah yang pertama memberikan tanggapan.</p>
+                  </div>
                 @endif
                 @foreach($task->comments as $c)
-                  <div class="flex gap-3 pb-4 border-b border-slate-200 last:border-b-0">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-slate-500 to-slate-500 flex items-center justify-center text-white font-bold flex-shrink-0 text-sm">
+                  <div class="flex gap-3 pb-4 border-b border-slate-300 last:border-b-0">
+                    <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-white font-bold flex-shrink-0 text-sm shadow-sm">
                       {{ strtoupper(substr($c->user->name,0,1)) }}
                     </div>
                     <div class="flex-1">
-                      <div class="font-bold text-slate-800 text-sm">{{ $c->user->name }}</div>
-                      <div class="text-sm text-slate-700 mt-1 bg-slate-100 p-3 rounded-lg border border-slate-300">{{ $c->body }}</div>
-                      <div class="text-xs text-slate-400 mt-1">{{ $c->created_at->diffForHumans() }}</div>
+                      <div class="flex items-center justify-between">
+                        <div class="font-black text-slate-900 text-sm uppercase tracking-tight">{{ $c->user->name }}</div>
+                        <div class="text-[10px] font-bold text-slate-500 bg-slate-200 px-2 py-0.5 rounded uppercase">{{ $c->created_at->diffForHumans() }}</div>
+                      </div>
+                      <div class="text-sm text-slate-800 mt-1.5 bg-white p-3 rounded-lg border-2 border-slate-200 shadow-sm leading-relaxed">{{ $c->body }}</div>
                     </div>
                   </div>
                 @endforeach
