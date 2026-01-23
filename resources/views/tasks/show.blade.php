@@ -3,350 +3,281 @@
 @section('page-title', 'Detail Tugas')
 
 @section('content')
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 pb-8">
-    <div class="max-w-6xl mx-auto px-4">
-      
-      <!-- Success Message -->
-      @if(session('success'))
-      <div class="mt-6 mb-6 p-4 bg-gradient-to-r from-slate-50 to-slate-50 border-l-4 border-slate-500 text-slate-700 rounded-lg shadow-md flex items-start gap-3 animate-pulse">
-        <svg class="w-6 h-6 mt-0.5 flex-shrink-0 text-slate-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        <div class="flex-1">
-          <p class="font-bold text-lg">✓ Berhasil!</p>
-          <p class="text-sm mt-1">{{ session('success') }}</p>
-        </div>
-      </div>
-      @endif
-
-      <!-- Error Message -->
-      @if(session('error'))
-      <div class="mt-6 mb-6 p-4 bg-gradient-to-r from-slate-50 to-slate-50 border-l-4 border-slate-500 text-slate-700 rounded-lg shadow-md flex items-start gap-3">
-        <svg class="w-6 h-6 mt-0.5 flex-shrink-0 text-slate-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-        <div class="flex-1">
-          <p class="font-bold text-lg">✗ Error</p>
-          <p class="text-sm mt-1">{{ session('error') }}</p>
-        </div>
-      </div>
-      @endif
-
-      <!-- Back button -->
-      <div class="mt-6 mb-6">
-        <a href="{{ url()->previous() }}" class="inline-flex items-center gap-2 text-slate-600 hover:text-slate-700 font-semibold transition">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-          ← Kembali
-        </a>
-      </div>
-
-      <!-- Main Grid Layout -->
-      <div class="grid grid-cols-3 gap-6">
-        <!-- Left Column (2/3) -->
-        <div class="col-span-2 space-y-6">
-          
-          <!-- Task Header Card -->
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-            <!-- Header Background -->
-            <div class="h-32 bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 relative overflow-hidden">
-              <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=%2760%27 height=%2760%27 viewBox=%270 0 60 60%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cg fill=%27none%27 fill-rule=%27evenodd%27%3E%3Cg fill=%27%23ffffff%27 fill-opacity=%270.5%27%3E%3Cpath d=%27M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
-            </div>
-
-            <!-- Content -->
-            <div class="px-6 pb-6 -mt-16 relative">
-              <div class="flex items-start justify-between gap-4">
-                <div class="flex-1">
-                  <h1 class="text-3xl font-bold text-slate-800 mb-3">{{ $task->title }}</h1>
-                  <div class="space-y-2 text-sm">
-                    <p class="flex items-center gap-2 text-slate-600">
-                      <svg class="w-4 h-4 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM4 9a1 1 0 100 2h8a1 1 0 100-2H4z"/></svg>
-                      <span class="font-medium text-slate-700">Proyek:</span> <span class="text-slate-600 font-semibold">{{ $task->project->name ?? 'N/A' }}</span>
-                    </p>
-                    @if($task->assignee)
-                    <p class="flex items-center gap-2 text-slate-600">
-                      <svg class="w-4 h-4 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/></svg>
-                      <span class="font-medium text-slate-700">Tim Member:</span> <span class="text-slate-600 font-semibold">{{ $task->assignee->name }}</span>
-                    </p>
-                    @endif
-                  </div>
-                </div>
-                <div class="text-center bg-gradient-to-br from-slate-100 to-slate-50 rounded-xl p-4 shadow-sm border border-slate-300">
-                  <span class="block px-4 py-2 rounded-full text-sm font-bold
-                    @if($task->status == 'Done') bg-gradient-to-r from-slate-100 to-slate-100 text-slate-700
-                    @elseif($task->status == 'In Progress') bg-gradient-to-r from-slate-100 to-slate-100 text-slate-700
-                    @elseif($task->status == 'Review') bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700
-                    @else bg-gradient-to-r from-gray-100 to-slate-100 text-slate-700 @endif">
-                    {{ $task->status }}
-                  </span>
-                  @if($task->progress)
-                  <div class="mt-4">
-                    <p class="text-xs text-slate-700 font-bold mb-2 uppercase tracking-wider">Progress</p>
-                    <div class="w-28 h-3 bg-slate-200 rounded-full overflow-hidden border border-slate-300 shadow-inner">
-                      <div class="h-full bg-slate-600 transition-all duration-500 rounded-full" style="width: {{ $task->progress }}%"></div>
-                    </div>
-                    <p class="text-sm text-slate-900 mt-2 font-black">{{ $task->progress }}%</p>
-                  </div>
-                  @endif
-                </div>
-              </div>
-
-              @if($task->description)
-              <div class="mt-6 pt-6 border-t border-slate-200">
-                <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2 uppercase tracking-wide">
-                  <svg class="w-4 h-4 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000-2H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V9a1 1 0 10-2 0v8a1 1 0 01-1 1H4a1 1 0 01-1-1V5z" clip-rule="evenodd"/></svg>
-                  Deskripsi Tugas
-                </h3>
-                <p class="text-slate-700 leading-relaxed bg-gradient-to-br from-slate-50 to-indigo-50 p-4 rounded-lg border border-slate-200">{{ $task->description }}</p>
-              </div>
-              @endif
-            </div>
-          </div>
-
-          <!-- Lampiran File Section -->
-          @php $canUpload = auth()->user()->role === 'member' && $task->assignee_id == auth()->id(); @endphp
-          
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-            <div class="px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-50">
-              <h3 class="font-bold text-lg text-slate-800 flex items-center gap-3 uppercase tracking-wide">
-                <svg class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/></svg>
-                📎 Lampiran & Bukti Pekerjaan
-              </h3>
-            </div>
-            
-            <div class="p-6">
-              @if($canUpload)
-              <form action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data" class="mb-6">
-                @csrf
-                <div class="border-2 border-dashed border-slate-300 p-8 text-center rounded-xl hover:border-slate-500 hover:bg-slate-50 transition bg-gradient-to-br from-slate-50 to-slate-50 group">
-                  <svg class="w-16 h-16 mx-auto text-slate-400 mb-3 group-hover:text-slate-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                  <input type="file" name="file" class="mb-3 cursor-pointer">
-                  <p class="text-sm text-slate-700 font-bold">Drag & drop atau klik untuk memilih file</p>
-                  <p class="text-xs text-slate-500 mt-1">Ukuran maksimal 5MB</p>
-                </div>
-                <div class="flex justify-end mt-4">
-                  <button type="submit" class="bg-gradient-to-r from-slate-600 to-slate-600 hover:from-slate-700 hover:to-slate-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 shadow-lg transition transform hover:scale-105 font-bold">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    Upload File
-                  </button>
-                </div>
-              </form>
-              @else
-              <div class="p-4 bg-white border-2 border-slate-300 rounded-lg shadow-sm">
-                <p class="text-sm text-slate-800 font-bold">
-                  @if(auth()->user()->role === 'admin')
-                    👤 <strong>Admin View:</strong> Fitur upload hanya untuk anggota tim yang ditugaskan.
-                  @elseif(auth()->user()->role === 'pm')
-                    👨‍💼 <strong>PM View:</strong> Fitur upload hanya untuk anggota tim yang ditugaskan.
-                  @else
-                    ❌ <strong>Anda tidak ditugaskan untuk tugas ini.</strong>
-                  @endif
-                </p>
-              </div>
-              @endif
-
-              @php
-                $files = [];
-                if ($task->files) {
-                    if (is_string($task->files)) {
-                        $decoded = json_decode($task->files, true);
-                        $files = is_array($decoded) ? $decoded : [];
-                    } elseif (is_array($task->files) || $task->files instanceof \Illuminate\Support\Collection) {
-                        $files = $task->files;
-                    }
-                }
-              @endphp
-
-              @if(!empty($files))
-                <div class="mt-6 pt-6 border-t border-slate-200">
-                  <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2 uppercase tracking-wide">
-                    <svg class="w-4 h-4 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4z"/></svg>
-                    File Terupload ({{ count($files) }})
-                  </h4>
-                  <ul class="space-y-2">
-                    @foreach($files as $f)
-                      @php $name = is_array($f) && isset($f['name']) ? $f['name'] : (is_string($f) ? $f : 'file'); @endphp
-                      @php $path = is_array($f) && isset($f['path']) ? $f['path'] : (is_string($f) ? $f : null); @endphp
-                      @if($path)
-                        @php
-                          $link = (\Illuminate\Support\Str::startsWith($path, 'uploads/')) ? asset($path) : asset('storage/'.$path);
-                        @endphp
-                        <li class="flex items-center p-3 bg-gradient-to-r from-slate-50 to-slate-50 rounded-lg border-2 border-slate-200 hover:shadow-md transition">
-                          <svg class="w-5 h-5 text-slate-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-                          <a href="{{ $link }}" target="_blank" class="text-slate-700 hover:text-slate-800 font-bold flex-1">{{ $name }}</a>
-                          <svg class="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4m-4-4l4 4m0 0l4-4m-4 4v12"/></svg>
-                        </li>
-                      @endif
-                    @endforeach
-                  </ul>
-                </div>
-              @else
-                <div class="text-center py-10 text-slate-600 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
-                  <svg class="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" clip-rule="evenodd"/></svg>
-                  <p class="font-bold text-lg">Belum ada file yang diupload</p>
-                  <p class="text-sm mt-1">Gunakan form di atas untuk mengunggah bukti pekerjaan.</p>
-                </div>
-              @endif
-            </div>
-          </div>
-
-          <!-- Diskusi Section -->
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-            <div class="px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-50">
-              <h3 class="font-bold text-lg text-slate-800 flex items-center gap-3 uppercase tracking-wide">
-                <svg class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"/></svg>
-                💬 Diskusi & Komentar
-              </h3>
-            </div>
-
-            <div class="p-6">
-              <div class="space-y-4 max-h-96 overflow-y-auto mb-6 bg-slate-50 p-4 rounded-lg border-2 border-slate-200">
-                @if($task->comments->isEmpty())
-                  <div class="text-center text-slate-600 py-10">
-                    <svg class="w-12 h-12 mx-auto mb-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <p class="font-bold text-lg">Belum ada komentar</p>
-                    <p class="text-sm mt-1">Jadilah yang pertama memberikan tanggapan.</p>
-                  </div>
-                @endif
-                @foreach($task->comments as $c)
-                  <div class="flex gap-3 pb-4 border-b border-slate-300 last:border-b-0">
-                    <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-white font-bold flex-shrink-0 text-sm shadow-sm">
-                      {{ strtoupper(substr($c->user->name,0,1)) }}
-                    </div>
-                    <div class="flex-1">
-                      <div class="flex items-center justify-between">
-                        <div class="font-black text-slate-900 text-sm uppercase tracking-tight">{{ $c->user->name }}</div>
-                        <div class="text-[10px] font-bold text-slate-500 bg-slate-200 px-2 py-0.5 rounded uppercase">{{ $c->created_at->diffForHumans() }}</div>
-                      </div>
-                      <div class="text-sm text-slate-800 mt-1.5 bg-white p-3 rounded-lg border-2 border-slate-200 shadow-sm leading-relaxed">{{ $c->body }}</div>
-                    </div>
-                  </div>
-                @endforeach
-              </div>
-
-              <form method="POST" action="{{ route('tasks.comment', $task) }}" class="flex gap-2">
-                @csrf
-                <input type="text" name="body" class="flex-1 border-2 border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition" placeholder="Tulis komentar...">
-                <button class="bg-gradient-to-r from-slate-600 to-slate-600 text-white px-6 py-3 rounded-lg hover:from-slate-700 hover:to-slate-700 transition transform hover:scale-105 font-bold">Kirim</button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column (1/3) -->
-        <div class="col-span-1">
-          <!-- Status Update Section -->
-          @if($canUpload && $task->status !== 'Done')
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 sticky top-20">
-            <div class="px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-50">
-              <h3 class="font-bold text-slate-800 flex items-center gap-2 uppercase tracking-wide">
-                <svg class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/></svg>
-                Perubahan Status
-              </h3>
-            </div>
-            
-            <div class="p-6 space-y-4">
-              @if($task->status == 'To Do')
-              <form action="{{ route('tasks.update-status', $task) }}" method="POST">
-                @csrf
-                <input type="hidden" name="status" value="In Progress">
-                <button type="submit" class="w-full bg-gradient-to-r from-slate-600 to-slate-600 hover:from-slate-700 hover:to-slate-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-lg transition transform hover:scale-105">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.3A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"/></svg>
-                  🚀 Mulai Mengerjakan
-                </button>
-              </form>
-              @elseif($task->status == 'In Progress')
-              <form action="{{ route('tasks.update-status', $task) }}" method="POST" id="submitForm" onsubmit="handleSubmit(event)">
-                @csrf
-                <input type="hidden" name="status" value="Review">
-                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-slate-600 to-slate-600 hover:from-slate-700 hover:to-slate-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-lg transition transform hover:scale-105">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  📤 Kirim untuk Validasi
-                </button>
-              </form>
-              @elseif($task->status == 'Review')
-              <div class="p-5 bg-gradient-to-br from-slate-50 to-indigo-50 border-2 border-slate-300 rounded-lg text-center">
-                <p class="text-slate-700 font-bold text-2xl">⏳</p>
-                <p class="text-slate-800 font-bold mt-2 text-sm">Menunggu Validasi</p>
-                <p class="text-slate-600 text-xs mt-2">PM akan segera me-review tugas Anda</p>
-              </div>
-              @endif
-            </div>
-          </div>
-          @endif
-
-          <!-- PM Validation Section -->
-          @php
-            $isValidationAllowed = ($task->status === 'Review') && 
-                                   ($task->project && (
-                                     auth()->user()->role === 'admin' || 
-                                     $task->project->pm_id == auth()->id()
-                                   ));
-          @endphp
-          
-          @if($isValidationAllowed)
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-slate-300 sticky top-20 mt-6">
-            <div class="px-6 py-4 border-b border-slate-300 bg-gradient-to-r from-slate-50 to-slate-50">
-              <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                🔍 Validasi Tugas
-              </h3>
-            </div>
-
-            <div class="p-6 space-y-4">
-              <p class="text-sm text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-200 font-semibold">
-                Tugas ini sudah di-submit untuk review. Silakan validasi hasil kerja anggota tim.
-              </p>
-
-              <form action="{{ route('tasks.validate', [$task->project, $task]) }}" method="POST" class="space-y-4">
-                @csrf
-                
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">💬 Feedback (opsional)</label>
-                  <textarea name="feedback" rows="3" 
-                            class="w-full px-4 py-2 border-2 border-slate-300 rounded-lg focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition resize-none font-medium"
-                            placeholder="Berikan feedback atau alasan penolakan..."></textarea>
-                </div>
-                
-                <div class="space-y-3">
-                  <button type="submit" name="approval" value="approve" 
-                          class="w-full bg-gradient-to-r from-slate-600 to-slate-600 hover:from-slate-700 hover:to-slate-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-lg transition transform hover:scale-105">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                    ✓ Setujui & Selesaikan
-                  </button>
-                  <button type="submit" name="approval" value="reject" 
-                          class="w-full bg-gradient-to-r from-slate-600 to-slate-600 hover:from-slate-700 hover:to-slate-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-lg transition transform hover:scale-105"
-                          onclick="return confirm('Yakin ingin menolak tugas ini? Anggota harus mengerjakan ulang.');"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                    ✗ Tolak
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-          @endif
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function handleSubmit(event) {
-      event.preventDefault();
-      
-      const btn = document.getElementById('submitBtn');
-      
-      btn.disabled = true;
-      btn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sedang mengirim...';
-      
-      setTimeout(() => {
-        document.getElementById('submitForm').submit();
+<div class="min-h-screen bg-[#F8FAFC] pb-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        setTimeout(() => {
-          const successMsg = document.querySelector('[class*="bg-green"]');
-          if (successMsg) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        <div class="py-6 flex items-center justify-between">
+            <a href="{{ url()->previous() }}" class="group flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold transition-all italic uppercase text-xs tracking-widest">
+                <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
+                Kembali
+            </a>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Task ID: #{{ $task->id }}</div>
+        </div>
+
+        @if(session('success'))
+        <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl shadow-sm animate-fade-in-down flex items-center gap-3">
+            <div class="bg-emerald-500 p-1 rounded-full text-white">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <p class="text-emerald-800 text-sm font-bold uppercase tracking-tight">{{ session('success') }}</p>
+        </div>
+        @endif
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            setTimeout(() => {
-              window.location.href = '{{ route("tasks.my-tasks") }}';
-            }, 2000);
-          }
-        }, 500);
-      }, 300);
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-slate-100 overflow-hidden relative">
+                    <div class="h-3 bg-blue-600"></div> {{-- Top Accent Bar --}}
+                    
+                    <div class="p-8 md:p-12">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                            <div>
+                                <span class="bg-blue-50 text-blue-600 text-[10px] font-black px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-[0.2em] mb-4 inline-block italic">
+                                    {{ $task->project->name ?? 'General Project' }}
+                                </span>
+                                <h1 class="text-4xl font-black text-slate-900 tracking-tighter leading-tight uppercase italic">
+                                    {{ $task->title }}
+                                </h1>
+                            </div>
+                            
+                            {{-- Progress Circle/Status --}}
+                            <div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
+                                <div class="relative w-16 h-16 flex items-center justify-center">
+                                    <svg class="w-full h-full -rotate-90">
+                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
+                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" stroke-dasharray="175.9" stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}" class="text-blue-600 transition-all duration-1000" />
+                                    </svg>
+                                    <span class="absolute text-xs font-black text-slate-800 tracking-tighter">{{ $task->progress ?? 0 }}%</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status</p>
+                                    <p class="font-black text-slate-900 uppercase italic leading-none">{{ $task->status }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2 italic">
+                                <span class="w-8 h-[2px] bg-blue-600"></span> Deskripsi Tugas
+                            </h3>
+                            <div class="text-slate-600 leading-relaxed text-lg italic bg-blue-50/30 p-6 rounded-3xl border border-blue-100/50">
+                                {{ $task->description ?? 'Tidak ada deskripsi tambahan.' }}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-slate-100">
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Dibuat Oleh</p>
+                                <p class="font-bold text-slate-800 italic uppercase">System Admin</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Assignee</p>
+                                <div class="flex items-center gap-2">
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($task->assignee->name ?? 'U') }}&background=0284c7&color=fff" class="w-5 h-5 rounded-full" />
+                                    <p class="font-bold text-slate-800 italic uppercase">{{ $task->assignee->name ?? '-' }}</p>
+                                </div>
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Deadline</p>
+                                <p class="font-bold text-slate-800 italic uppercase text-red-500">{{ $task->due_date ? date('d M, Y', strtotime($task->due_date)) : 'No Deadline' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8">
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                            Lampiran
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            @php
+                                $files = is_string($task->files) ? json_decode($task->files, true) : ($task->files ?? []);
+                            @endphp
+                            
+                            @forelse($files as $f)
+                                @php 
+                                    $name = is_array($f) ? $f['name'] : $f;
+                                    $path = is_array($f) ? $f['path'] : $f;
+                                    $link = (\Illuminate\Support\Str::startsWith($path, 'uploads/')) ? asset($path) : asset('storage/'.$path);
+                                @endphp
+                                <a href="{{ $link }}" target="_blank" class="flex items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50 transition-all group">
+                                    <div class="p-2 bg-white rounded-lg shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                    </div>
+                                    <div class="ml-3 overflow-hidden">
+                                        <p class="text-xs font-black text-slate-700 truncate uppercase tracking-tighter">{{ $name }}</p>
+                                    </div>
+                                </a>
+                            @empty
+                                <div class="text-center py-8 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase italic">Belum ada file</p>
+                                </div>
+                            @endforelse
+
+                            @if(auth()->user()->role === 'member' && $task->assignee_id == auth()->id())
+                            <form action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data" class="mt-4">
+                                @csrf
+                                <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group">
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">+ Upload Bukti</p>
+                                    </div>
+                                    <input type="file" name="file" class="hidden" onchange="this.form.submit()" />
+                                </label>
+                            </form>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8 flex flex-col">
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                            Diskusi
+                        </h3>
+                        
+                        <div class="flex-1 space-y-4 max-h-[300px] overflow-y-auto mb-6 pr-2 custom-scrollbar">
+                            @forelse($task->comments as $c)
+                            <div class="flex gap-3">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($c->user->name) }}&background=f1f5f9&color=64748b" class="w-8 h-8 rounded-full" />
+                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl rounded-tl-none border border-slate-100">
+                                    <div class="flex justify-between mb-1">
+                                        <p class="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{{ $c->user->name }}</p>
+                                        <p class="text-[8px] font-bold text-slate-400 uppercase">{{ $c->created_at->diffForHumans() }}</p>
+                                    </div>
+                                    <p class="text-xs text-slate-600 leading-relaxed">{{ $c->body }}</p>
+                                </div>
+                            </div>
+                            @empty
+                            <p class="text-center text-[10px] font-black text-slate-400 uppercase py-10 italic">Belum ada percakapan</p>
+                            @endforelse
+                        </div>
+
+                        <form method="POST" action="{{ route('tasks.comment', $task) }}" class="relative mt-auto">
+                            @csrf
+                            <input type="text" name="body" placeholder="Tulis pesan..." class="w-full bg-slate-100 border-none rounded-2xl px-5 py-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 transition-all outline-none">
+                            <button class="absolute right-2 top-2 p-1.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 space-y-6">
+                
+                {{-- Task Actions --}}
+                <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
+                    
+                    <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic">Kendali Tugas</h3>
+                    
+                    <div class="space-y-4 relative z-10">
+                        @php $isAssignee = auth()->user()->role === 'member' && $task->assignee_id == auth()->id(); @endphp
+
+                        @if($isAssignee && $task->status !== 'Done')
+                            @if($task->status == 'To Do')
+                            <form action="{{ route('tasks.update-status', $task) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="In Progress">
+                                <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-3xl transition-all transform hover:scale-[1.02] shadow-xl shadow-blue-600/20 uppercase tracking-widest italic text-sm">
+                                    Mulai Kerjakan 🚀
+                                </button>
+                            </form>
+                            @elseif($task->status == 'In Progress')
+                            <form action="{{ route('tasks.update-status', $task) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="Review">
+                                <button class="w-full bg-amber-500 hover:bg-amber-400 text-white font-black py-5 rounded-3xl transition-all transform hover:scale-[1.02] shadow-xl shadow-amber-600/20 uppercase tracking-widest italic text-sm">
+                                    Kirim Review 📤
+                                </button>
+                            </form>
+                            @elseif($task->status == 'Review')
+                            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-3xl text-center">
+                                <div class="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Menunggu Validasi PM</p>
+                            </div>
+                            @endif
+                        @endif
+
+                        {{-- PM Validation --}}
+                        @php
+                            $isPM = ($task->project && (auth()->user()->role === 'admin' || $task->project->pm_id == auth()->id()));
+                        @endphp
+                        
+                        @if($isPM && $task->status === 'Review')
+                        <div class="bg-blue-600 p-8 rounded-[2rem] shadow-xl">
+                            <h4 class="text-white font-black uppercase italic tracking-widest text-sm mb-6 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Validasi PM
+                            </h4>
+                            <form action="{{ route('tasks.validate', [$task->project, $task]) }}" method="POST" class="space-y-4">
+                                @csrf
+                                <textarea name="feedback" placeholder="Berikan feedback..." class="w-full bg-blue-700/50 border-blue-400/50 rounded-2xl text-white placeholder-blue-300 text-xs font-bold focus:ring-white transition-all resize-none p-4" rows="3"></textarea>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button type="submit" name="approval" value="approve" class="bg-white text-blue-600 font-black py-3 rounded-2xl hover:bg-slate-100 transition-all uppercase text-[10px] tracking-tighter">Setujui</button>
+                                    <button type="submit" name="approval" value="reject" class="bg-red-500 text-white font-black py-3 rounded-2xl hover:bg-red-600 transition-all uppercase text-[10px] tracking-tighter">Tolak</button>
+                                </div>
+                            </form>
+                        </div>
+                        @endif
+
+                        @if($task->status == 'Done')
+                        <div class="bg-emerald-500 p-8 rounded-[2rem] text-center shadow-xl shadow-emerald-500/20 transform rotate-2">
+                            <svg class="w-12 h-12 text-white mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <p class="text-white font-black uppercase italic tracking-[0.2em] text-sm leading-none">Tugas Selesai</p>
+                            <p class="text-emerald-100 text-[10px] font-bold mt-1 uppercase">Valid & Verified</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Quick Meta --}}
+                <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 italic">Log Aktivitas</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                            <p class="text-[10px] font-black text-slate-600 uppercase">Input: {{ $task->created_at->format('d/m/y') }}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-slate-300 rounded-full"></div>
+                            <p class="text-[10px] font-black text-slate-600 uppercase">Update: {{ $task->updated_at->format('d/m/y H:i') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes fade-in-down {
+        0% { opacity: 0; transform: translateY(-10px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
-  </script>
+    .animate-fade-in-down {
+        animation: fade-in-down 0.5s ease-out;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
 @endsection
