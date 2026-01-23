@@ -5,11 +5,13 @@
 @section('content')
 <div class="max-w-5xl mx-auto py-6 px-4 text-black">
     <div class="bg-white rounded-3xl shadow-2xl border-2 border-slate-200 overflow-hidden">
+        {{-- Header Section --}}
         <div class="p-8 border-b-2 border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-4xl font-black text-slate-900 tracking-tight italic uppercase">Pusat<span class="text-blue-600">Notifikasi</span></h1>
                 <p class="text-sm text-slate-500 font-bold mt-1 tracking-widest uppercase">System Alerts & Updates</p>
             </div>
+            
             @if($notifications->where('read', false)->count() > 0)
             <form action="{{ route('notifications.read-all') }}" method="POST">
                 @csrf
@@ -20,10 +22,12 @@
             @endif
         </div>
         
+        {{-- Notification List --}}
         <div class="divide-y-2 divide-slate-100">
             @forelse($notifications as $notification)
             <div class="p-6 {{ $notification->read ? 'bg-white' : 'bg-blue-50/50' }} hover:bg-slate-50 transition-all group">
                 <div class="flex items-start gap-6">
+                    {{-- Status Indicator --}}
                     <div class="flex-shrink-0 mt-1">
                         @if(!$notification->read)
                         <div class="relative">
@@ -34,6 +38,8 @@
                         <span class="w-4 h-4 bg-slate-200 rounded-full block border-2 border-white shadow-sm"></span>
                         @endif
                     </div>
+
+                    {{-- Content --}}
                     <div class="flex-1">
                         <div class="flex justify-between items-start gap-4">
                             <p class="text-base font-bold text-slate-800 leading-relaxed">{{ $notification->message }}</p>
@@ -47,7 +53,9 @@
                             <form action="{{ route('notifications.read', $notification) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest flex items-center gap-1.5 group/btn">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
                                     Konfirmasi Baca
                                 </button>
                             </form>
@@ -59,6 +67,7 @@
                 </div>
             </div>
             @empty
+            {{-- Empty State --}}
             <div class="p-24 text-center">
                 <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-dashed border-slate-200">
                     <svg class="w-12 h-12 text-slate-200" fill="currentColor" viewBox="0 0 20 20">
@@ -71,6 +80,7 @@
             @endforelse
         </div>
         
+        {{-- Pagination --}}
         @if($notifications->hasPages())
         <div class="p-8 border-t-2 border-slate-100 bg-slate-50/50">
             {{ $notifications->links() }}
@@ -78,5 +88,4 @@
         @endif
     </div>
 </div>
-@endsection
 @endsection
