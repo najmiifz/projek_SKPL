@@ -1,80 +1,71 @@
 @extends('layouts.app')
 
+@section('page-title', 'Kelola Tugas')
+
 @section('content')
-<div class="max-w-7xl mx-auto py-6 px-4">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-        <div>
-            <h1 class="text-4xl font-black text-slate-900 tracking-tight italic uppercase">Daftar<span class="text-blue-600">Seluruh Tugas</span></h1>
-            <p class="text-sm text-slate-500 font-bold mt-1 tracking-widest uppercase">Central Task Repository</p>
-        </div>
+<div class="max-w-7xl mx-auto space-y-8">
+    <div class="text-center md:text-left mb-10">
+        <h1 class="text-3xl font-black text-[#0F172A] tracking-tighter uppercase italic">
+            DAFTAR <span class="text-blue-600">SELURUH TUGAS</span>
+        </h1>
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">Central Task Repository</p>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-2xl border-2 border-slate-200 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-900 text-white uppercase text-[11px] font-black tracking-[0.2em]">
-                        <th class="p-6">Informasi Tugas</th>
-                        <th class="p-6">Proyek Terkait</th>
-                        <th class="p-6">Penanggung Jawab</th>
-                        <th class="p-6">Progress / Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y-2 divide-slate-100">
-                    @forelse($tasks as $task)
-                        <tr class="hover:bg-slate-50 transition-all group">
-                            <td class="p-6">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-1.5 h-10 bg-blue-600 rounded-full group-hover:h-12 transition-all"></div>
-                                    <div>
-                                        <h3 class="font-black text-slate-900 uppercase tracking-tight text-lg">{{ $task->title }}</h3>
-                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ID: #TSK-{{ $task->id }}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="p-6 text-sm font-black text-slate-700 uppercase tracking-wide">
-                                <div class="bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 inline-block">
-                                    {{ $task->project->name ?? 'NO PROJECT' }}
-                                </div>
-                            </td>
-                            <td class="p-6">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ $task->assignee->avatar ?? 'https://i.pravatar.cc/100?u=' . urlencode($task->assignee->email ?? 'none') }}" 
-                                         class="w-10 h-10 rounded-xl object-cover border-2 border-white shadow-md" alt="">
-                                    <span class="text-sm font-black text-slate-800 uppercase tracking-tight">{{ $task->assignee->name ?? 'UNASSIGNED' }}</span>
-                                </div>
-                            </td>
-                            <td class="p-6">
-                                <div class="flex items-center gap-4">
-                                    <span class="px-3 py-1 text-[10px] font-black rounded-lg uppercase tracking-widest border-2
-                                        @if($task->status === 'Done') bg-emerald-50 text-emerald-700 border-emerald-200
-                                        @elseif($task->status === 'In Progress') bg-amber-50 text-amber-700 border-amber-200
-                                        @elseif($task->status === 'Review') bg-blue-50 text-blue-700 border-blue-200
-                                        @else bg-slate-50 text-slate-700 border-slate-200 @endif">
-                                        {{ $task->status }}
-                                    </span>
-                                    
-                                    @if(isset($task->progress))
-                                    <div class="w-24 bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-200">
-                                        <div class="bg-blue-600 h-full transition-all duration-1000" style="width: {{ $task->progress }}%"></div>
-                                    </div>
-                                    <span class="text-[10px] font-black text-slate-900">{{ $task->progress }}%</span>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="p-20 text-center">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-dashed border-slate-200">
-                                    <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                                </div>
-                                <p class="text-slate-400 font-black uppercase tracking-widest">Belum ada tugas yang dibuat</p>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+    <div class="bg-white rounded-[2rem] shadow-simpro border border-slate-100 overflow-hidden">
+        <div class="bg-[#0F172A] grid grid-cols-12 px-8 py-5 text-[10px] font-black text-white uppercase tracking-[0.15em]">
+            <div class="col-span-4">Informasi Tugas</div>
+            <div class="col-span-3 text-center">Proyek Terkait</div>
+            <div class="col-span-3 text-center border-l border-slate-800">Penanggung Jawab</div>
+            <div class="col-span-2 text-center border-l border-slate-800">Progress / Status</div>
+        </div>
+
+        <div class="divide-y divide-slate-100">
+            @forelse($tasks as $task)
+            <div class="grid grid-cols-12 items-center px-8 py-6 hover:bg-slate-50 transition-all group">
+                <div class="col-span-4 flex items-center gap-5">
+                    <div class="w-1.5 h-14 bg-blue-600 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.4)]"></div>
+                    <div class="truncate">
+                        <h4 class="font-black text-slate-900 text-sm uppercase leading-none tracking-tight group-hover:text-blue-600 transition-colors">
+                            {{ $task->title }}
+                        </h4>
+                        <p class="text-[10px] text-slate-400 font-bold mt-2 uppercase">ID: #TSK-{{ $task->id }}</p>
+                    </div>
+                </div>
+
+                <div class="col-span-3 flex justify-center">
+                    <span class="bg-slate-100 text-slate-500 text-[9px] font-black px-4 py-2 rounded-xl border border-slate-200 uppercase tracking-tighter">
+                        {{ $task->project->name ?? 'GENERAL' }}
+                    </span>
+                </div>
+
+                <div class="col-span-3 flex justify-center items-center gap-3">
+                    <div class="relative">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($task->user->name ?? 'U') }}&background=0D8ABC&color=fff" 
+                             class="w-9 h-9 rounded-full border-2 border-white shadow-md object-cover">
+                    </div>
+                    <span class="text-[11px] font-black text-slate-700 uppercase italic tracking-tight">
+                        {{ $task->user->name ?? 'Unassigned' }}
+                    </span>
+                </div>
+
+                <div class="col-span-2 flex flex-col items-center gap-3 px-4">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="px-3 py-1 rounded-lg border text-[8px] font-black uppercase {{ $task->status == 'Done' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-blue-50 text-blue-600 border-blue-200' }}">
+                            {{ $task->status }}
+                        </span>
+                        <span class="text-[10px] font-black text-slate-900 italic">{{ $task->progress ?? 0 }}%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden flex items-center">
+                        <div class="h-full bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.3)]" style="width: {{ $task->progress ?? 0 }}%"></div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="p-20 text-center opacity-40">
+                <p class="font-black text-xs uppercase tracking-widest italic">Belum Ada Tugas Yang Terdaftar</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </div>
+@endsection
