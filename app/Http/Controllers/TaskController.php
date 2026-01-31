@@ -45,13 +45,13 @@ class TaskController extends Controller
             'start_date' => 'nullable|date',
             'priority' => 'nullable|in:Low,Medium,High'
         ]);
-        
+
         // Validate due_date doesn't exceed project end_date
         $project = Project::find($data['project_id']);
         if ($data['due_date'] && $project->end_date && \Carbon\Carbon::parse($data['due_date']) > \Carbon\Carbon::parse($project->end_date)) {
             return redirect()->back()->withErrors(['due_date' => 'Deadline tugas tidak boleh melampaui deadline proyek (' . $project->end_date . ')']);
         }
-        
+
         $data['status'] = 'To Do';
         $data['progress'] = 0;
         $task = Task::create($data);
@@ -101,27 +101,47 @@ class TaskController extends Controller
 
     public function uploadFile(Request $request, Task $task)
     {
-        $request->validate(['file'=>'required|file|max:5120']);
+        // 1. Validasi format file yang diperbolehkan
+        // mimes: jpeg, png, jpg (untuk gambar)
+        // mimes: pdf, docx, zip (untuk dokumen/file)
+        $request->validate([
+            'file' => 'required|file|mimes:jpeg,png,jpg,pdf,docx,zip|max:10240' // Max 10MB
+        ]);
+
         $file = $request->file('file');
-        // Prefer using the public disk (storage/app/public -> public/storage)
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+
+        // 2. Tentukan folder penyimpanan berdasarkan tipe file
+        // Gambar masuk ke folder 'images', sisanya masuk ke 'documents'
+        $subFolder = in_array($extension, ['jpg', 'jpeg', 'png']) ? 'images' : 'documents';
+
         if (file_exists(public_path('storage'))) {
-            $path = $file->store('task_files','public');
+            // Simpan menggunakan disk public (rekomendasi Laravel)
+            $path = $file->store("task_files/{$subFolder}", 'public');
         } else {
-            // Fallback: store directly under public/uploads/task_files
-            $uploadsDir = public_path('uploads/task_files');
+            // Fallback: simpan manual ke public/uploads
+            $uploadsDir = public_path("uploads/task_files/{$subFolder}");
             if (!file_exists($uploadsDir)) {
                 mkdir($uploadsDir, 0755, true);
             }
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . $originalName;
             $file->move($uploadsDir, $filename);
-            $path = 'uploads/task_files/' . $filename;
+            $path = "uploads/task_files/{$subFolder}/" . $filename;
         }
 
+        // 3. Update data file di database
         $files = $task->files ?? [];
-        $files[] = ['name' => $file->getClientOriginalName(), 'path' => $path];
+        $files[] = [
+            'name' => $originalName,
+            'path' => $path,
+            'type' => $subFolder, // Tambahan field untuk membedakan di tampilan
+            'uploaded_at' => now()->toDateTimeString()
+        ];
+
         $task->update(['files' => $files]);
 
-        return back()->with('status', 'File berhasil diupload.');
+        return back()->with('success', 'File ' . $originalName . ' berhasil diunggah.');
     }
 
     public function myTasks()
@@ -131,21 +151,21 @@ class TaskController extends Controller
                     ->with('project')
                     ->orderBy('created_at', 'desc')
                     ->get();
-        
+
         return view('mytasks.index', compact('tasks'));
     }
 
     public function updateStatus(Request $request, Task $task)
     {
         $user = Auth::user();
-        
+
         // Members can only submit for review (To Do/In Progress → Review)
         // Only PM can mark as Done (through validation)
         $allowedStatuses = ['To Do', 'In Progress', 'Review'];
-        
+
         // Check if user is PM of this project
         $isPM = $user->role === 'admin' || ($task->project && $task->project->pm_id === $user->id);
-        
+
         $request->validate([
             'status' => 'required|in:' . implode(',', $allowedStatuses)
         ]);
@@ -161,7 +181,7 @@ class TaskController extends Controller
         // Notifikasi ke PM jika status berubah ke Review
         if ($request->status === 'Review' && $task->project && $task->project->pm_id) {
             $message = Auth::user()->name . " mengajukan tugas \"{$task->title}\" untuk divalidasi.";
-            
+
             NotificationItem::create([
                 'user_id' => $task->project->pm_id,
                 'message' => $message,
@@ -176,10 +196,10 @@ class TaskController extends Controller
     {
         // Admin atau PM dapat memvalidasi hasil kerja
         $user = Auth::user();
-        
+
         // Allow admin or the assigned PM
         $isPM = $user->role === 'admin' || ($user->role === 'pm' && $project->pm_id === $user->id);
-        
+
         if (!$isPM) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk memvalidasi tugas ini.');
         }
