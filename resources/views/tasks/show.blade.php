@@ -5,7 +5,7 @@
 @section('content')
 <div class="min-h-screen bg-[#F8FAFC] pb-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <div class="py-6 flex items-center justify-between">
             <a href="{{ url()->previous() }}" class="group flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold transition-all italic uppercase text-xs tracking-widest">
                 <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
@@ -24,12 +24,12 @@
         @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <div class="lg:col-span-2 space-y-8">
-                
+
                 <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-slate-100 overflow-hidden relative">
                     <div class="h-3 bg-blue-600"></div> {{-- Top Accent Bar --}}
-                    
+
                     <div class="p-8 md:p-12">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                             <div>
@@ -40,21 +40,33 @@
                                     {{ $task->title }}
                                 </h1>
                             </div>
-                            
+
                             {{-- Progress Circle/Status --}}
-                            <div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
-                                <div class="relative w-16 h-16 flex items-center justify-center">
-                                    <svg class="w-full h-full -rotate-90">
-                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
-                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" stroke-dasharray="175.9" stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}" class="text-blue-600 transition-all duration-1000" />
-                                    </svg>
-                                    <span class="absolute text-xs font-black text-slate-800 tracking-tighter">{{ $task->progress ?? 0 }}%</span>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status</p>
-                                    <p class="font-black text-slate-900 uppercase italic leading-none">{{ $task->status }}</p>
-                                </div>
-                            </div>
+<div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
+    <div class="relative w-16 h-16 flex items-center justify-center">
+        {{--
+            FIX:
+            1. Menambahkan viewBox="0 0 64 64" agar koordinat sinkron.
+            2. Menambahkan stroke-linecap="round" agar ujung garisnya membulat (rapi).
+        --}}
+        <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
+            {{-- Background Circle (Abu-abu) --}}
+            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
+
+            {{-- Progress Circle (Biru) --}}
+            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent"
+                stroke-dasharray="175.9"
+                stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}"
+                stroke-linecap="round"
+                class="text-blue-600 transition-all duration-1000" />
+        </svg>
+        <span class="absolute text-xs font-black text-slate-800 tracking-tighter">{{ $task->progress ?? 0 }}%</span>
+    </div>
+    <div class="text-right">
+        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status</p>
+        <p class="font-black text-slate-900 uppercase italic leading-none">{{ $task->status }}</p>
+    </div>
+</div>
                         </div>
 
                         <div class="relative">
@@ -92,14 +104,14 @@
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                             Lampiran
                         </h3>
-                        
+
                         <div class="space-y-3">
                             @php
                                 $files = is_string($task->files) ? json_decode($task->files, true) : ($task->files ?? []);
                             @endphp
-                            
+
                             @forelse($files as $f)
-                                @php 
+                                @php
                                     $name = is_array($f) ? $f['name'] : $f;
                                     $path = is_array($f) ? $f['path'] : $f;
                                     $link = (\Illuminate\Support\Str::startsWith($path, 'uploads/')) ? asset($path) : asset('storage/'.$path);
@@ -137,7 +149,7 @@
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                             Diskusi
                         </h3>
-                        
+
                         <div class="flex-1 space-y-4 max-h-[300px] overflow-y-auto mb-6 pr-2 custom-scrollbar">
                             @forelse($task->comments as $c)
                             <div class="flex gap-3">
@@ -167,13 +179,13 @@
             </div>
 
             <div class="lg:col-span-1 space-y-6">
-                
+
                 {{-- Task Actions --}}
                 <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
-                    
+
                     <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic">Kendali Tugas</h3>
-                    
+
                     <div class="space-y-4 relative z-10">
                         @php $isAssignee = auth()->user()->role === 'member' && $task->assignee_id == auth()->id(); @endphp
 
@@ -208,7 +220,7 @@
                         @php
                             $isPM = ($task->project && (auth()->user()->role === 'admin' || $task->project->pm_id == auth()->id()));
                         @endphp
-                        
+
                         @if($isPM && $task->status === 'Review')
                         <div class="bg-blue-600 p-8 rounded-[2rem] shadow-xl">
                             <h4 class="text-white font-black uppercase italic tracking-widest text-sm mb-6 flex items-center gap-2">
@@ -218,7 +230,7 @@
                             <form action="{{ route('tasks.validate', [$task->project, $task]) }}" method="POST" class="space-y-4">
                                 @csrf
                                 <textarea name="feedback" placeholder="Berikan feedback..." class="w-full bg-blue-700/50 border-blue-400/50 rounded-2xl text-white placeholder-blue-300 text-xs font-bold focus:ring-white transition-all resize-none p-4" rows="3"></textarea>
-                                
+
                                 <div class="grid grid-cols-2 gap-3">
                                     <button type="submit" name="approval" value="approve" class="bg-white text-blue-600 font-black py-3 rounded-2xl hover:bg-slate-100 transition-all uppercase text-[10px] tracking-tighter">Setujui</button>
                                     <button type="submit" name="approval" value="reject" class="bg-red-500 text-white font-black py-3 rounded-2xl hover:bg-red-600 transition-all uppercase text-[10px] tracking-tighter">Tolak</button>
