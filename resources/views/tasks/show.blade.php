@@ -216,7 +216,9 @@
                 {{-- TASK CONTROL --}}
                 <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden group">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
-                    <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic">Kendali Tugas</h3>
+                    <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic text-center">
+  Kendali Tugas
+</h3>
 
                     <div class="space-y-4 relative z-10">
                         @php $isAssignee = auth()->user()->role === 'member' && $task->assignee_id == auth()->id(); @endphp
