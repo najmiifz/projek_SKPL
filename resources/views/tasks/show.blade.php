@@ -32,7 +32,7 @@
 
                 {{-- Main Task Card --}}
                 <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-slate-100 overflow-hidden relative">
-                    <div class="h-3 bg-blue-600"></div> {{-- Top Accent Bar --}}
+                    <div class="h-3 bg-blue-600"></div>
 
                     <div class="p-8 md:p-12">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
@@ -45,13 +45,11 @@
                                 </h1>
                             </div>
 
-                            {{-- Progress Circle (FIXED) --}}
+                            {{-- Progress Circle (Sesuai Database) --}}
                             <div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
                                 <div class="relative w-16 h-16 flex items-center justify-center">
                                     <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
-                                        {{-- Background Circle --}}
                                         <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
-                                        {{-- Progress Circle --}}
                                         <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent"
                                             stroke-dasharray="175.9"
                                             stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}"
@@ -98,10 +96,8 @@
                     </div>
                 </div>
 
-                {{-- Bottom Grid --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                    {{-- LAMPIRAN SECTION (FIXED: Image Preview + Download + AJAX Upload) --}}
+                    {{-- LAMPIRAN SECTION --}}
                     <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8">
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
@@ -109,10 +105,7 @@
                         </h3>
 
                         <div class="space-y-3">
-                            @php
-                                $files = is_string($task->files) ? json_decode($task->files, true) : ($task->files ?? []);
-                            @endphp
-
+                            @php $files = is_string($task->files) ? json_decode($task->files, true) : ($task->files ?? []); @endphp
                             @forelse($files as $f)
                                 @php
                                     $name = is_array($f) ? $f['name'] : $f;
@@ -121,28 +114,19 @@
                                     $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
                                     $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);
                                 @endphp
-
-                                <a href="{{ $link }}" download="{{ $name }}" class="flex items-center p-3 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50 transition-all group relative overflow-hidden">
+                                <a href="{{ $link }}" download="{{ $name }}" class="flex items-center p-3 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50 transition-all group overflow-hidden">
                                     @if($isImage)
-                                        {{-- Thumbnail Image --}}
                                         <div class="w-12 h-12 flex-shrink-0 bg-slate-200 rounded-lg overflow-hidden border border-slate-200 relative">
-                                            <img src="{{ $link }}" alt="{{ $name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                            <img src="{{ $link }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
                                         </div>
                                     @else
-                                        {{-- File Icon --}}
                                         <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all text-slate-400">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                         </div>
                                     @endif
-
                                     <div class="ml-3 overflow-hidden flex-1">
                                         <p class="text-xs font-black text-slate-700 truncate uppercase tracking-tighter">{{ $name }}</p>
-                                        <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5 group-hover:text-blue-500 transition-colors">
-                                            {{ $isImage ? 'Klik untuk unduh gambar' : 'Klik untuk unduh file' }}
-                                        </p>
-                                    </div>
-                                    <div class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity text-blue-600">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5 group-hover:text-blue-500 transition-colors">Unduh file</p>
                                     </div>
                                 </a>
                             @empty
@@ -151,14 +135,11 @@
                                 </div>
                             @endforelse
 
-                            {{-- AJAX UPLOAD FORM --}}
                             @if(auth()->user()->role === 'member' && $task->assignee_id == auth()->id())
                             <div class="mt-4">
                                 <form id="upload-form" action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-
-                                    {{-- Tombol Upload --}}
-                                    <label id="upload-label" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group relative">
+                                    <label id="upload-label" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group">
                                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                             <div class="p-2 bg-blue-100 rounded-full mb-2 group-hover:bg-blue-200 transition-colors">
                                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
@@ -167,72 +148,73 @@
                                         </div>
                                         <input type="file" name="file" id="file-input" class="hidden" />
                                     </label>
-
-                                    {{-- Progress Bar (Hidden Default) --}}
                                     <div id="progress-container" class="hidden w-full h-24 border-2 border-solid border-blue-100 rounded-2xl bg-white p-4 flex-col justify-center items-center relative overflow-hidden">
                                         <div class="absolute inset-0 bg-blue-50/30 animate-pulse"></div>
                                         <div class="relative w-full z-10">
                                             <div class="flex justify-between items-end mb-2">
-                                                <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest italic">Mengupload...</span>
+                                                <span class="text-[10px] font-black text-blue-600 uppercase italic tracking-widest">Mengupload...</span>
                                                 <span id="progress-percent" class="text-xs font-black text-blue-800">0%</span>
                                             </div>
                                             <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out shadow-[0_0_10px_rgba(37,99,235,0.5)]" style="width: 0%"></div>
+                                                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(37,99,235,0.5)]" style="width: 0%"></div>
                                             </div>
-                                            <p class="text-[9px] text-slate-400 mt-2 text-center italic">Mohon tunggu, jangan tutup halaman.</p>
                                         </div>
                                     </div>
-
-                                    {{-- Error Message --}}
-                                    <div id="upload-error" class="hidden mt-2 p-3 bg-red-50 text-red-600 text-[10px] font-bold rounded-xl border border-red-100 text-center uppercase">
-                                        Gagal mengupload file. Silakan coba lagi.
-                                    </div>
+                                    <div id="upload-error" class="hidden mt-2 p-3 bg-red-50 text-red-600 text-[10px] font-bold rounded-xl border border-red-100 text-center uppercase">Gagal upload. Coba lagi.</div>
                                 </form>
                             </div>
                             @endif
                         </div>
                     </div>
 
-                    {{-- COMMENT SECTION --}}
-                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8 flex flex-col">
-                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                            Diskusi
-                        </h3>
+                    {{-- DISKUSI SECTION (Fixed Overflow & Responsiveness) --}}
+                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 flex flex-col h-[500px]">
+                        <div class="p-6 border-b border-slate-50">
+                            <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                Diskusi Tim
+                            </h3>
+                        </div>
 
-                        <div class="flex-1 space-y-4 max-h-[300px] overflow-y-auto mb-6 pr-2 custom-scrollbar">
+                        <div id="comment-container" class="flex-1 p-6 overflow-y-auto space-y-6 custom-scrollbar bg-slate-50/30">
                             @forelse($task->comments as $c)
-                            <div class="flex gap-3">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($c->user->name) }}&background=f1f5f9&color=64748b" class="w-8 h-8 rounded-full" />
-                                <div class="flex-1 bg-slate-50 p-4 rounded-2xl rounded-tl-none border border-slate-100">
-                                    <div class="flex justify-between mb-1">
-                                        <p class="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{{ $c->user->name }}</p>
-                                        <p class="text-[8px] font-bold text-slate-400 uppercase">{{ $c->created_at->diffForHumans() }}</p>
+                                @php $isMe = $c->user_id === auth()->id(); @endphp
+                                <div class="flex {{ $isMe ? 'flex-row-reverse' : 'flex-row' }} items-end gap-3">
+                                    <div class="flex-shrink-0">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($c->user->name) }}&background={{ $isMe ? '0284c7' : 'f1f5f9' }}&color={{ $isMe ? 'fff' : '64748b' }}" class="w-8 h-8 rounded-full shadow-sm" />
                                     </div>
-                                    <p class="text-xs text-slate-600 leading-relaxed">{{ $c->body }}</p>
+                                    <div class="max-w-[85%] sm:max-w-[75%] space-y-1">
+                                        @if(!$isMe)<p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter ml-2">{{ $c->user->name }}</p>@endif
+                                        <div class="p-4 rounded-2xl shadow-sm text-sm {{ $isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-slate-600 border border-slate-100 rounded-bl-none' }}">
+                                            <p class="leading-relaxed break-words whitespace-pre-wrap" style="word-break: break-word;">{{ $c->body }}</p>
+                                        </div>
+                                        <p class="text-[8px] font-bold text-slate-400 uppercase {{ $isMe ? 'text-right mr-2' : 'ml-2' }}">{{ $c->created_at->diffForHumans() }}</p>
+                                    </div>
                                 </div>
-                            </div>
                             @empty
-                            <p class="text-center text-[10px] font-black text-slate-400 uppercase py-10 italic">Belum ada percakapan</p>
+                                <div class="h-full flex flex-col items-center justify-center text-center p-10 opacity-40 italic">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase">Belum ada percakapan</p>
+                                </div>
                             @endforelse
                         </div>
 
-                        <form method="POST" action="{{ route('tasks.comment', $task) }}" class="relative mt-auto">
-                            @csrf
-                            <input type="text" name="body" placeholder="Tulis pesan..." class="w-full bg-slate-100 border-none rounded-2xl px-5 py-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 transition-all outline-none">
-                            <button class="absolute right-2 top-2 p-1.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                            </button>
-                        </form>
+                        <div class="p-4 bg-white border-t border-slate-50 rounded-b-[2rem]">
+                            <form method="POST" action="{{ route('tasks.comment', $task) }}" class="relative group">
+                                @csrf
+                                <input type="text" name="body" required autocomplete="off" placeholder="Tulis pesan..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-5 pr-14 py-4 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none">
+                                <button type="submit" class="absolute right-2 top-2 bottom-2 px-4 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 active:scale-95 transition-all flex items-center justify-center">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- RIGHT COLUMN --}}
             <div class="lg:col-span-1 space-y-6">
-
                 {{-- TASK CONTROL --}}
-                <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
+                <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden group">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
                     <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic">Kendali Tugas</h3>
 
@@ -241,48 +223,38 @@
 
                         @if($isAssignee && $task->status !== 'Done')
                             @if($task->status == 'To Do')
-                            <form action="{{ route('tasks.update-status', $task) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="In Progress">
-                                <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-3xl transition-all transform hover:scale-[1.02] shadow-xl shadow-blue-600/20 uppercase tracking-widest italic text-sm">
-                                    Mulai Kerjakan 🚀
-                                </button>
-                            </form>
+                                <form action="{{ route('tasks.update-status', $task) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="In Progress">
+                                    <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-3xl transition-all shadow-xl shadow-blue-600/20 uppercase italic text-sm tracking-widest">Mulai Kerjakan 🚀</button>
+                                </form>
                             @elseif($task->status == 'In Progress')
-                            <form action="{{ route('tasks.update-status', $task) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="status" value="Review">
-                                <button class="w-full bg-amber-500 hover:bg-amber-400 text-white font-black py-5 rounded-3xl transition-all transform hover:scale-[1.02] shadow-xl shadow-amber-600/20 uppercase tracking-widest italic text-sm">
-                                    Kirim Review 📤
-                                </button>
-                            </form>
+                                <form action="{{ route('tasks.update-status', $task) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="status" value="Review">
+                                    <button class="w-full bg-amber-500 hover:bg-amber-400 text-white font-black py-5 rounded-3xl transition-all shadow-xl shadow-amber-600/20 uppercase italic text-sm tracking-widest">Kirim Review 📤</button>
+                                </form>
                             @elseif($task->status == 'Review')
-                            <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-3xl text-center">
-                                <div class="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div class="bg-slate-800/50 border border-slate-700 p-6 rounded-3xl text-center">
+                                    <div class="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    </div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Menunggu Validasi PM</p>
                                 </div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Menunggu Validasi PM</p>
-                            </div>
                             @endif
                         @endif
 
                         {{-- PM Validation --}}
-                        @php
-                            $isPM = ($task->project && (auth()->user()->role === 'admin' || $task->project->pm_id == auth()->id()));
-                        @endphp
-
+                        @php $isPM = ($task->project && (auth()->user()->role === 'admin' || $task->project->pm_id == auth()->id())); @endphp
                         @if($isPM && $task->status === 'Review')
                         <div class="bg-blue-600 p-8 rounded-[2rem] shadow-xl">
-                            <h4 class="text-white font-black uppercase italic tracking-widest text-sm mb-6 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                Validasi PM
-                            </h4>
+                            <h4 class="text-white font-black uppercase italic text-sm mb-6 flex items-center gap-2">Validasi PM</h4>
                             <form action="{{ route('tasks.validate', [$task->project, $task]) }}" method="POST" class="space-y-4">
                                 @csrf
-                                <textarea name="feedback" placeholder="Berikan feedback..." class="w-full bg-blue-700/50 border-blue-400/50 rounded-2xl text-white placeholder-blue-300 text-xs font-bold focus:ring-white transition-all resize-none p-4" rows="3"></textarea>
+                                <textarea name="feedback" placeholder="Berikan feedback..." class="w-full bg-blue-700/50 border-none rounded-2xl text-white placeholder-blue-300 text-xs font-bold p-4 resize-none" rows="3"></textarea>
                                 <div class="grid grid-cols-2 gap-3">
-                                    <button type="submit" name="approval" value="approve" class="bg-white text-blue-600 font-black py-3 rounded-2xl hover:bg-slate-100 transition-all uppercase text-[10px] tracking-tighter">Setujui</button>
-                                    <button type="submit" name="approval" value="reject" class="bg-red-500 text-white font-black py-3 rounded-2xl hover:bg-red-600 transition-all uppercase text-[10px] tracking-tighter">Tolak</button>
+                                    <button type="submit" name="approval" value="approve" class="bg-white text-blue-600 font-black py-3 rounded-2xl uppercase text-[10px]">Setujui</button>
+                                    <button type="submit" name="approval" value="reject" class="bg-red-500 text-white font-black py-3 rounded-2xl uppercase text-[10px]">Tolak</button>
                                 </div>
                             </form>
                         </div>
@@ -292,7 +264,6 @@
                         <div class="bg-emerald-500 p-8 rounded-[2rem] text-center shadow-xl shadow-emerald-500/20 transform rotate-2">
                             <svg class="w-12 h-12 text-white mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <p class="text-white font-black uppercase italic tracking-[0.2em] text-sm leading-none">Tugas Selesai</p>
-                            <p class="text-emerald-100 text-[10px] font-bold mt-1 uppercase">Valid & Verified</p>
                         </div>
                         @endif
                     </div>
@@ -318,34 +289,15 @@
     </div>
 </div>
 
-{{-- CSS --}}
-<style>
-    @keyframes fade-in-down {
-        0% { opacity: 0; transform: translateY(-10px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in-down {
-        animation: fade-in-down 0.5s ease-out;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-</style>
-
-{{-- JAVASCRIPT FOR AJAX UPLOAD --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Auto Scroll Diskusi
+        const commentContainer = document.getElementById('comment-container');
+        if(commentContainer) {
+            commentContainer.scrollTop = commentContainer.scrollHeight;
+        }
+
+        // AJAX Upload Handler
         const fileInput = document.getElementById('file-input');
         const uploadForm = document.getElementById('upload-form');
         const uploadLabel = document.getElementById('upload-label');
@@ -357,56 +309,35 @@
         if(fileInput) {
             fileInput.addEventListener('change', function(e) {
                 if (fileInput.files.length > 0) {
-                    uploadFile(fileInput.files[0]);
+                    uploadLabel.classList.add('hidden');
+                    progressContainer.classList.remove('hidden');
+                    uploadError.classList.add('hidden');
+
+                    let formData = new FormData(uploadForm);
+                    let xhr = new XMLHttpRequest();
+
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percent = Math.round((e.loaded / e.total) * 100);
+                            progressBar.style.width = percent + '%';
+                            progressPercent.innerText = percent + '%';
+                        }
+                    });
+
+                    xhr.addEventListener('load', function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            window.location.reload();
+                        } else {
+                            progressContainer.classList.add('hidden');
+                            uploadLabel.classList.remove('hidden');
+                            uploadError.classList.remove('hidden');
+                        }
+                    });
+
+                    xhr.open('POST', uploadForm.action, true);
+                    xhr.send(formData);
                 }
             });
-        }
-
-        function uploadFile(file) {
-            // Setup UI
-            uploadLabel.classList.add('hidden');
-            progressContainer.classList.remove('hidden');
-            uploadError.classList.add('hidden');
-
-            let formData = new FormData(uploadForm);
-            let xhr = new XMLHttpRequest();
-
-            // Progress Event
-            xhr.upload.addEventListener('progress', function(e) {
-                if (e.lengthComputable) {
-                    const percentComplete = Math.round((e.loaded / e.total) * 100);
-                    progressBar.style.width = percentComplete + '%';
-                    progressPercent.innerText = percentComplete + '%';
-
-                    if(percentComplete === 100) {
-                        progressPercent.innerText = 'Memproses...';
-                    }
-                }
-            });
-
-            // Load/Complete Event
-            xhr.addEventListener('load', function() {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    setTimeout(() => { window.location.reload(); }, 500);
-                } else {
-                    showError();
-                }
-            });
-
-            // Error Event
-            xhr.addEventListener('error', function() {
-                showError();
-            });
-
-            xhr.open('POST', uploadForm.action, true);
-            xhr.send(formData);
-        }
-
-        function showError() {
-            progressContainer.classList.add('hidden');
-            uploadLabel.classList.remove('hidden');
-            uploadError.classList.remove('hidden');
-            fileInput.value = '';
         }
     });
 </script>

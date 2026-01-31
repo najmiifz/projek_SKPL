@@ -158,33 +158,29 @@ class TaskController extends Controller
     public function updateStatus(Request $request, Task $task)
     {
         $user = Auth::user();
-
-        // Members can only submit for review (To Do/In Progress → Review)
-        // Only PM can mark as Done (through validation)
         $allowedStatuses = ['To Do', 'In Progress', 'Review'];
-
-        // Check if user is PM of this project
-        $isPM = $user->role === 'admin' || ($task->project && $task->project->pm_id === $user->id);
 
         $request->validate([
             'status' => 'required|in:' . implode(',', $allowedStatuses)
         ]);
 
-        // Prevent direct "Done" status update (only PM validation can do this)
-        if ($request->status === 'Done') {
-            return back()->with('error', 'Status "Done" hanya dapat ditetapkan melalui validasi PM!');
+        // LOGIKA PROGRESS OTOMATIS BERDASARKAN STATUS
+        $progress = 0;
+        if ($request->status === 'In Progress') {
+            $progress = 50;
+        } elseif ($request->status === 'Review') {
+            $progress = 100;
         }
 
-        $oldStatus = $task->status;
-        $task->update(['status' => $request->status]);
+        $task->update([
+            'status' => $request->status,
+            'progress' => $progress // Update progress ke database
+        ]);
 
-        // Notifikasi ke PM jika status berubah ke Review
         if ($request->status === 'Review' && $task->project && $task->project->pm_id) {
-            $message = Auth::user()->name . " mengajukan tugas \"{$task->title}\" untuk divalidasi.";
-
             NotificationItem::create([
                 'user_id' => $task->project->pm_id,
-                'message' => $message,
+                'message' => $user->name . " mengajukan tugas \"{$task->title}\" untuk divalidasi.",
                 'read' => false,
             ]);
         }
@@ -194,14 +190,11 @@ class TaskController extends Controller
 
     public function validateTask(Request $request, Project $project, Task $task)
     {
-        // Admin atau PM dapat memvalidasi hasil kerja
         $user = Auth::user();
-
-        // Allow admin or the assigned PM
         $isPM = $user->role === 'admin' || ($user->role === 'pm' && $project->pm_id === $user->id);
 
         if (!$isPM) {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk memvalidasi tugas ini.');
+            return redirect()->back()->with('error', 'Akses ditolak.');
         }
 
         $request->validate([
@@ -210,27 +203,22 @@ class TaskController extends Controller
         ]);
 
         if ($request->approval === 'approve') {
-            // Approve: change status to Done
             $task->update([
                 'status' => 'Done',
+                'progress' => 100, // Tetap 100%
                 'validated_at' => now()
             ]);
-
-            $message = "✓ Tugas \"{$task->title}\" telah disetujui dan selesai oleh Project Manager.";
+            $message = "✓ Tugas \"{$task->title}\" telah disetujui.";
         } else {
-            // Reject: change status back to In Progress
+            // Jika ditolak, balikkan ke In Progress (50%) agar bisa diperbaiki
             $task->update([
                 'status' => 'In Progress',
+                'progress' => 50,
                 'validated_at' => null
             ]);
-
-            $message = "✗ Tugas \"{$task->title}\" ditolak oleh Project Manager. ";
-            if ($request->feedback) {
-                $message .= "Feedback: " . $request->feedback;
-            }
+            $message = "✗ Tugas \"{$task->title}\" ditolak. Feedback: " . $request->feedback;
         }
 
-        // Notifikasi ke assignee
         NotificationItem::create([
             'user_id' => $task->assignee_id,
             'message' => $message,
