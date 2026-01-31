@@ -96,15 +96,18 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {{-- ... Bagian Header Utama (tidak berubah) ... --}}
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 items-start">
+
                     {{-- LAMPIRAN SECTION --}}
-                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8">
+                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-6 md:p-8 h-full flex flex-col">
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                             Lampiran
                         </h3>
 
-                        <div class="space-y-3">
+                        <div class="space-y-3 flex-1">
                             @php $files = is_string($task->files) ? json_decode($task->files, true) : ($task->files ?? []); @endphp
                             @forelse($files as $f)
                                 @php
@@ -130,13 +133,13 @@
                                     </div>
                                 </a>
                             @empty
-                                <div class="text-center py-8 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                                <div class="text-center py-8 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 h-full flex flex-col items-center justify-center min-h-[150px]">
                                     <p class="text-[10px] font-black text-slate-400 uppercase italic">Belum ada file</p>
                                 </div>
                             @endforelse
 
                             @if(auth()->user()->role === 'member' && $task->assignee_id == auth()->id())
-                            <div class="mt-4">
+                            <div class="mt-4 pt-4 border-t border-slate-50">
                                 <form id="upload-form" action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <label id="upload-label" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group">
@@ -148,6 +151,7 @@
                                         </div>
                                         <input type="file" name="file" id="file-input" class="hidden" />
                                     </label>
+                                    {{-- Progress Bar Container (sama seperti sebelumnya) --}}
                                     <div id="progress-container" class="hidden w-full h-24 border-2 border-solid border-blue-100 rounded-2xl bg-white p-4 flex-col justify-center items-center relative overflow-hidden">
                                         <div class="absolute inset-0 bg-blue-50/30 animate-pulse"></div>
                                         <div class="relative w-full z-10">
@@ -167,19 +171,19 @@
                         </div>
                     </div>
 
-                    {{-- DISKUSI SECTION (Fixed Overflow & Responsiveness) --}}
-                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 flex flex-col h-[500px]">
-                        <div class="p-6 border-b border-slate-50">
+                    {{-- DISKUSI SECTION --}}
+                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 flex flex-col h-[450px] lg:h-[600px] relative overflow-hidden">
+                        <div class="p-6 border-b border-slate-50 flex-shrink-0 bg-white z-10">
                             <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                                 Diskusi Tim
                             </h3>
                         </div>
 
-                        <div id="comment-container" class="flex-1 p-6 overflow-y-auto space-y-6 custom-scrollbar bg-slate-50/30">
+                        <div id="comment-container" class="flex-1 p-6 overflow-y-auto space-y-6 custom-scrollbar bg-slate-50/50 scroll-smooth">
                             @forelse($task->comments as $c)
                                 @php $isMe = $c->user_id === auth()->id(); @endphp
-                                <div class="flex {{ $isMe ? 'flex-row-reverse' : 'flex-row' }} items-end gap-3">
+                                <div class="flex {{ $isMe ? 'flex-row-reverse' : 'flex-row' }} items-end gap-3 group">
                                     <div class="flex-shrink-0">
                                         <img src="https://ui-avatars.com/api/?name={{ urlencode($c->user->name) }}&background={{ $isMe ? '0284c7' : 'f1f5f9' }}&color={{ $isMe ? 'fff' : '64748b' }}" class="w-8 h-8 rounded-full shadow-sm" />
                                     </div>
@@ -188,37 +192,35 @@
                                         <div class="p-4 rounded-2xl shadow-sm text-sm {{ $isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-slate-600 border border-slate-100 rounded-bl-none' }}">
                                             <p class="leading-relaxed break-words whitespace-pre-wrap" style="word-break: break-word;">{{ $c->body }}</p>
                                         </div>
-                                        <p class="text-[8px] font-bold text-slate-400 uppercase {{ $isMe ? 'text-right mr-2' : 'ml-2' }}">{{ $c->created_at->diffForHumans() }}</p>
+                                        <p class="text-[8px] font-bold text-slate-400 uppercase {{ $isMe ? 'text-right mr-2' : 'ml-2' }} opacity-0 group-hover:opacity-100 transition-opacity">{{ $c->created_at->diffForHumans() }}</p>
                                     </div>
                                 </div>
                             @empty
                                 <div class="h-full flex flex-col items-center justify-center text-center p-10 opacity-40 italic">
+                                    <svg class="w-12 h-12 mb-2 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                                     <p class="text-[10px] font-black text-slate-400 uppercase">Belum ada percakapan</p>
                                 </div>
                             @endforelse
                         </div>
 
-                        <div class="p-4 bg-white border-t border-slate-50 rounded-b-[2rem]">
+                        <div class="p-4 bg-white border-t border-slate-50 flex-shrink-0 z-10">
                             <form method="POST" action="{{ route('tasks.comment', $task) }}" class="relative group">
                                 @csrf
                                 <input type="text" name="body" required autocomplete="off" placeholder="Tulis pesan..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-5 pr-14 py-4 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none">
                                 <button type="submit" class="absolute right-2 top-2 bottom-2 px-4 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 active:scale-95 transition-all flex items-center justify-center">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                    <svg class="w-4 h-4 transform -rotate-45 translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
 
             {{-- RIGHT COLUMN --}}
             <div class="lg:col-span-1 space-y-6">
                 {{-- TASK CONTROL --}}
                 <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden group">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
-                    <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic text-center">
-  Kendali Tugas
-</h3>
+                    <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic text-center">Kendali Tugas</h3>
 
                     <div class="space-y-4 relative z-10">
                         @php $isAssignee = auth()->user()->role === 'member' && $task->assignee_id == auth()->id(); @endphp
