@@ -6,6 +6,7 @@
 <div class="min-h-screen bg-[#F8FAFC] pb-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        {{-- Header Navigation --}}
         <div class="py-6 flex items-center justify-between">
             <a href="{{ url()->previous() }}" class="group flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold transition-all italic uppercase text-xs tracking-widest">
                 <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
@@ -14,6 +15,7 @@
             <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Task ID: #{{ $task->id }}</div>
         </div>
 
+        {{-- Flash Message Success --}}
         @if(session('success'))
         <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl shadow-sm animate-fade-in-down flex items-center gap-3">
             <div class="bg-emerald-500 p-1 rounded-full text-white">
@@ -25,8 +27,10 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
+            {{-- LEFT COLUMN --}}
             <div class="lg:col-span-2 space-y-8">
 
+                {{-- Main Task Card --}}
                 <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-slate-100 overflow-hidden relative">
                     <div class="h-3 bg-blue-600"></div> {{-- Top Accent Bar --}}
 
@@ -41,34 +45,29 @@
                                 </h1>
                             </div>
 
-                            {{-- Progress Circle/Status --}}
-<div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
-    <div class="relative w-16 h-16 flex items-center justify-center">
-        {{--
-            FIX:
-            1. Menambahkan viewBox="0 0 64 64" agar koordinat sinkron.
-            2. Menambahkan stroke-linecap="round" agar ujung garisnya membulat (rapi).
-        --}}
-        <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
-            {{-- Background Circle (Abu-abu) --}}
-            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
-
-            {{-- Progress Circle (Biru) --}}
-            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent"
-                stroke-dasharray="175.9"
-                stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}"
-                stroke-linecap="round"
-                class="text-blue-600 transition-all duration-1000" />
-        </svg>
-        <span class="absolute text-xs font-black text-slate-800 tracking-tighter">{{ $task->progress ?? 0 }}%</span>
-    </div>
-    <div class="text-right">
-        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status</p>
-        <p class="font-black text-slate-900 uppercase italic leading-none">{{ $task->status }}</p>
-    </div>
-</div>
+                            {{-- Progress Circle (FIXED) --}}
+                            <div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100">
+                                <div class="relative w-16 h-16 flex items-center justify-center">
+                                    <svg class="w-full h-full -rotate-90" viewBox="0 0 64 64">
+                                        {{-- Background Circle --}}
+                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent" class="text-slate-200" />
+                                        {{-- Progress Circle --}}
+                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="transparent"
+                                            stroke-dasharray="175.9"
+                                            stroke-dashoffset="{{ 175.9 - (175.9 * ($task->progress ?? 0) / 100) }}"
+                                            stroke-linecap="round"
+                                            class="text-blue-600 transition-all duration-1000" />
+                                    </svg>
+                                    <span class="absolute text-xs font-black text-slate-800 tracking-tighter">{{ $task->progress ?? 0 }}%</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status</p>
+                                    <p class="font-black text-slate-900 uppercase italic leading-none">{{ $task->status }}</p>
+                                </div>
+                            </div>
                         </div>
 
+                        {{-- Description --}}
                         <div class="relative">
                             <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2 italic">
                                 <span class="w-8 h-[2px] bg-blue-600"></span> Deskripsi Tugas
@@ -78,6 +77,7 @@
                             </div>
                         </div>
 
+                        {{-- Metadata --}}
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-slate-100">
                             <div>
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Dibuat Oleh</p>
@@ -98,7 +98,10 @@
                     </div>
                 </div>
 
+                {{-- Bottom Grid --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    {{-- LAMPIRAN SECTION (FIXED: Image Preview + Download + AJAX Upload) --}}
                     <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8">
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
@@ -115,13 +118,31 @@
                                     $name = is_array($f) ? $f['name'] : $f;
                                     $path = is_array($f) ? $f['path'] : $f;
                                     $link = (\Illuminate\Support\Str::startsWith($path, 'uploads/')) ? asset($path) : asset('storage/'.$path);
+                                    $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+                                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);
                                 @endphp
-                                <a href="{{ $link }}" target="_blank" class="flex items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50 transition-all group">
-                                    <div class="p-2 bg-white rounded-lg shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                                    </div>
-                                    <div class="ml-3 overflow-hidden">
+
+                                <a href="{{ $link }}" download="{{ $name }}" class="flex items-center p-3 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50 transition-all group relative overflow-hidden">
+                                    @if($isImage)
+                                        {{-- Thumbnail Image --}}
+                                        <div class="w-12 h-12 flex-shrink-0 bg-slate-200 rounded-lg overflow-hidden border border-slate-200 relative">
+                                            <img src="{{ $link }}" alt="{{ $name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                        </div>
+                                    @else
+                                        {{-- File Icon --}}
+                                        <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all text-slate-400">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        </div>
+                                    @endif
+
+                                    <div class="ml-3 overflow-hidden flex-1">
                                         <p class="text-xs font-black text-slate-700 truncate uppercase tracking-tighter">{{ $name }}</p>
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5 group-hover:text-blue-500 transition-colors">
+                                            {{ $isImage ? 'Klik untuk unduh gambar' : 'Klik untuk unduh file' }}
+                                        </p>
+                                    </div>
+                                    <div class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity text-blue-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                     </div>
                                 </a>
                             @empty
@@ -130,20 +151,49 @@
                                 </div>
                             @endforelse
 
+                            {{-- AJAX UPLOAD FORM --}}
                             @if(auth()->user()->role === 'member' && $task->assignee_id == auth()->id())
-                            <form action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data" class="mt-4">
-                                @csrf
-                                <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">+ Upload Bukti</p>
+                            <div class="mt-4">
+                                <form id="upload-form" action="{{ route('tasks.upload', $task) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+
+                                    {{-- Tombol Upload --}}
+                                    <label id="upload-label" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/50 hover:bg-blue-50 transition-all group relative">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <div class="p-2 bg-blue-100 rounded-full mb-2 group-hover:bg-blue-200 transition-colors">
+                                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                            </div>
+                                            <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">+ Upload Bukti</p>
+                                        </div>
+                                        <input type="file" name="file" id="file-input" class="hidden" />
+                                    </label>
+
+                                    {{-- Progress Bar (Hidden Default) --}}
+                                    <div id="progress-container" class="hidden w-full h-24 border-2 border-solid border-blue-100 rounded-2xl bg-white p-4 flex-col justify-center items-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-blue-50/30 animate-pulse"></div>
+                                        <div class="relative w-full z-10">
+                                            <div class="flex justify-between items-end mb-2">
+                                                <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest italic">Mengupload...</span>
+                                                <span id="progress-percent" class="text-xs font-black text-blue-800">0%</span>
+                                            </div>
+                                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out shadow-[0_0_10px_rgba(37,99,235,0.5)]" style="width: 0%"></div>
+                                            </div>
+                                            <p class="text-[9px] text-slate-400 mt-2 text-center italic">Mohon tunggu, jangan tutup halaman.</p>
+                                        </div>
                                     </div>
-                                    <input type="file" name="file" class="hidden" onchange="this.form.submit()" />
-                                </label>
-                            </form>
+
+                                    {{-- Error Message --}}
+                                    <div id="upload-error" class="hidden mt-2 p-3 bg-red-50 text-red-600 text-[10px] font-bold rounded-xl border border-red-100 text-center uppercase">
+                                        Gagal mengupload file. Silakan coba lagi.
+                                    </div>
+                                </form>
+                            </div>
                             @endif
                         </div>
                     </div>
 
+                    {{-- COMMENT SECTION --}}
                     <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 p-8 flex flex-col">
                         <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -178,12 +228,12 @@
                 </div>
             </div>
 
+            {{-- RIGHT COLUMN --}}
             <div class="lg:col-span-1 space-y-6">
 
-                {{-- Task Actions --}}
+                {{-- TASK CONTROL --}}
                 <div class="bg-slate-900 rounded-[2rem] p-8 shadow-2xl shadow-blue-900/20 relative overflow-hidden group">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
-
                     <h3 class="text-xs font-black text-blue-400 uppercase tracking-[0.3em] mb-8 italic">Kendali Tugas</h3>
 
                     <div class="space-y-4 relative z-10">
@@ -230,7 +280,6 @@
                             <form action="{{ route('tasks.validate', [$task->project, $task]) }}" method="POST" class="space-y-4">
                                 @csrf
                                 <textarea name="feedback" placeholder="Berikan feedback..." class="w-full bg-blue-700/50 border-blue-400/50 rounded-2xl text-white placeholder-blue-300 text-xs font-bold focus:ring-white transition-all resize-none p-4" rows="3"></textarea>
-
                                 <div class="grid grid-cols-2 gap-3">
                                     <button type="submit" name="approval" value="approve" class="bg-white text-blue-600 font-black py-3 rounded-2xl hover:bg-slate-100 transition-all uppercase text-[10px] tracking-tighter">Setujui</button>
                                     <button type="submit" name="approval" value="reject" class="bg-red-500 text-white font-black py-3 rounded-2xl hover:bg-red-600 transition-all uppercase text-[10px] tracking-tighter">Tolak</button>
@@ -249,7 +298,7 @@
                     </div>
                 </div>
 
-                {{-- Quick Meta --}}
+                {{-- Activity Log --}}
                 <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm">
                     <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 italic">Log Aktivitas</h4>
                     <div class="space-y-4">
@@ -269,6 +318,7 @@
     </div>
 </div>
 
+{{-- CSS --}}
 <style>
     @keyframes fade-in-down {
         0% { opacity: 0; transform: translateY(-10px); }
@@ -292,4 +342,72 @@
         background: #94a3b8;
     }
 </style>
+
+{{-- JAVASCRIPT FOR AJAX UPLOAD --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('file-input');
+        const uploadForm = document.getElementById('upload-form');
+        const uploadLabel = document.getElementById('upload-label');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        const uploadError = document.getElementById('upload-error');
+
+        if(fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if (fileInput.files.length > 0) {
+                    uploadFile(fileInput.files[0]);
+                }
+            });
+        }
+
+        function uploadFile(file) {
+            // Setup UI
+            uploadLabel.classList.add('hidden');
+            progressContainer.classList.remove('hidden');
+            uploadError.classList.add('hidden');
+
+            let formData = new FormData(uploadForm);
+            let xhr = new XMLHttpRequest();
+
+            // Progress Event
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressPercent.innerText = percentComplete + '%';
+
+                    if(percentComplete === 100) {
+                        progressPercent.innerText = 'Memproses...';
+                    }
+                }
+            });
+
+            // Load/Complete Event
+            xhr.addEventListener('load', function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    setTimeout(() => { window.location.reload(); }, 500);
+                } else {
+                    showError();
+                }
+            });
+
+            // Error Event
+            xhr.addEventListener('error', function() {
+                showError();
+            });
+
+            xhr.open('POST', uploadForm.action, true);
+            xhr.send(formData);
+        }
+
+        function showError() {
+            progressContainer.classList.add('hidden');
+            uploadLabel.classList.remove('hidden');
+            uploadError.classList.remove('hidden');
+            fileInput.value = '';
+        }
+    });
+</script>
 @endsection
